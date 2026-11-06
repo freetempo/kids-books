@@ -149,6 +149,8 @@ dialog.panel::backdrop { background: rgba(10,14,20,.55); }
 .panel ol .meta { color: var(--muted); font-size: .8rem; }
 .panel textarea { width: 100%; min-height: 84px; font: .82rem/1.5 ui-monospace, Menlo, monospace; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px; resize: vertical; }
 .panel .note { font-size: .8rem; color: var(--muted); margin: 0; }
+.help ul { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; font-size: .9rem; }
+.help p { margin: 0; font-size: .9rem; }
 .panel .msg { font-size: .82rem; color: var(--read); min-height: 1.2em; }
 .panel section { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 14px; }
 dialog#detail { border: 0; padding: 0; border-radius: 14px; width: min(440px, calc(100vw - 32px)); max-height: calc(100vh - 48px); background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
@@ -183,6 +185,7 @@ footer p { margin: 0; }
       </select>
       <button class="btn primary" id="pick">今晚讀哪本？</button>
       <button class="btn" id="open-list">我的清單</button>
+      <button class="btn" id="open-help">使用說明</button>
     </div>
     <div class="fsum" id="fsum"></div>
     <div id="filters">
@@ -215,6 +218,45 @@ footer p { margin: 0; }
     <div class="pickhead" id="pickhead"></div>
     <div id="detail-body"></div>
     <div class="pickagain" id="pickagain"></div>
+  </dialog>
+  <dialog class="panel" id="helpdlg" aria-labelledby="help-title">
+    <div class="ph"><h2 id="help-title">使用說明</h2><button class="x" id="help-close" aria-label="關閉">×</button></div>
+    <div class="pb help">
+      <section>
+        <h3>可以做什麼</h3>
+        <ul>
+          <li>用上面的篩選挑年齡、年度、分類；搜尋框可以找書名、作者或分館。</li>
+          <li>「封面牆」只看封面，點封面看詳細；「詳細」一次顯示全部資訊。</li>
+          <li>每本書可以標「讀過」「最愛」「想買」，也可以寫筆記。</li>
+          <li>「今晚讀哪本？」會從目前篩選的書裡隨機抽一本，優先抽還沒讀過的。</li>
+          <li>「我的清單」可以把最愛、想買、讀過的書複製成文字，貼到 LINE 或備忘錄。</li>
+        </ul>
+      </section>
+      <section>
+        <h3>標記和筆記存在哪裡</h3>
+        <ul>
+          <li>只存在你現在用的這個瀏覽器，不會上傳，別人看不到。</li>
+          <li>不同瀏覽器之間不會同步：同一支手機的 Safari、Chrome、LINE 裡開的網頁，各自分開存。</li>
+          <li>無痕模式不會存。清除瀏覽器資料、刪掉重裝 App 或換手機，紀錄都會不見。</li>
+          <li>iPhone 的 Safari 有規定：一個網站超過 7 天沒打開，可能會被清掉資料。</li>
+        </ul>
+      </section>
+      <section>
+        <h3>建議的打開方式</h3>
+        <p><b>iPhone：</b>用 Safari 打開這個網頁 → 點下方的分享按鈕 → 選「加入主畫面」。之後都從主畫面的圖示打開，不受 7 天規定影響，用起來像一個 App。</p>
+        <p><b>Android：</b>用 Chrome 打開 → 點右上角選單 → 選「加到主畫面」。</p>
+        <p><b>從 LINE、Messenger 點開：</b>可以看、可以用，但這類 App 內建的瀏覽器有時會清掉資料，不建議當成主要的打開方式。</p>
+        <p class="note">主畫面的圖示、Safari、LINE 裡的紀錄彼此不相通。換地方用時，請用下面的方法搬過去。</p>
+      </section>
+      <section>
+        <h3>搬家和備份</h3>
+        <ol>
+          <li>在原本的地方打開「我的清單」，按最下面的「複製我的標記代碼」。</li>
+          <li>到新的瀏覽器或手機打開這個網頁，同樣打開「我的清單」，把代碼貼進框裡，按「匯入」。</li>
+        </ol>
+        <p class="note">匯入是合併，不會蓋掉原本的標記。建議偶爾複製一份代碼存在備忘錄，紀錄不見時可以救回來。代碼裡只有書的 ISBN 和你寫的筆記。</p>
+      </section>
+    </div>
   </dialog>
   <dialog class="panel" id="listdlg" aria-labelledby="list-title">
     <div class="ph"><h2 id="list-title">我的清單</h2><button class="x" id="list-close" aria-label="關閉">×</button></div>
@@ -549,6 +591,10 @@ function renderList() {
 }
 document.getElementById("open-list").addEventListener("click", () => { renderList(); listDlg.showModal ? listDlg.showModal() : listDlg.setAttribute("open", ""); });
 document.getElementById("list-close").addEventListener("click", () => listDlg.close());
+const helpDlg = document.getElementById("helpdlg");
+document.getElementById("open-help").addEventListener("click", () => { helpDlg.showModal ? helpDlg.showModal() : helpDlg.setAttribute("open", ""); helpDlg.scrollTop = 0; });
+document.getElementById("help-close").addEventListener("click", () => helpDlg.close());
+helpDlg.addEventListener("click", e => { if (e.target === helpDlg) helpDlg.close(); });
 listDlg.addEventListener("click", e => { if (e.target === listDlg) listDlg.close(); });
 document.getElementById("list-which").addEventListener("click", e => {
   const c = e.target.closest(".chip"); if (!c) return;
