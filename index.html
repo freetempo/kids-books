@@ -372,7 +372,7 @@ footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px;
         <p>簡介依手冊推薦語整理改寫，可能和原書略有出入。書名連到三民網路書店。封面版權屬於各出版社，這裡只用來辨識書籍。</p>
       </section>
     </div>
-    <p class="fline">個人整理的非官方書單，書目以國立臺灣圖書館公布的手冊為準 · 整理於 2026-11-06</p>
+    <p class="fline">個人整理的非官方書單，書目以國立臺灣圖書館公布的手冊為準 · 整理於 2026-11-06<br>製作：<span id="maker">freetempo</span></p>
   </footer>
 </div>
 
@@ -772,6 +772,12 @@ document.getElementById("shelf").addEventListener("toggle", e => {
   const isbn = d.closest(".book").dataset.isbn; if (d.open) openLib.add(isbn); else openLib.delete(isbn);
 }, true);
 if (!HOLD.items) document.getElementById("holdnote").hidden = true;
+// The address is assembled here so it is not sitting in the page source as plain text for spam crawlers.
+(function () {
+  const addr = ["freetempostudio", "gmail.com"].join("@");
+  const el = document.getElementById("maker");
+  el.innerHTML = `<a href="mailto:${addr}" title="寫信給 ${addr}">freetempo</a>`;
+})();
 render();
 </script>
 
