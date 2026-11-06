@@ -38,10 +38,11 @@ h1 { font-family: var(--f-title); font-size: clamp(2rem, 4.6vw, 3rem); line-heig
 .stats b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
 .hero-side { display: grid; justify-items: end; gap: 18px; align-self: stretch; align-content: space-between; }
 .fan { position: relative; width: 250px; height: 150px; }
-.fan img { position: absolute; bottom: 0; height: 138px; width: auto; max-width: 112px; object-fit: cover; border-radius: 4px; box-shadow: 0 6px 16px rgba(20,30,40,.22); border: 3px solid var(--surface); }
+.fan img { cursor: pointer; transition: transform .2s; position: absolute; bottom: 0; height: 138px; width: auto; max-width: 112px; object-fit: cover; border-radius: 4px; box-shadow: 0 6px 16px rgba(20,30,40,.22); border: 3px solid var(--surface); }
 .fan img:nth-child(1) { left: 0; transform: rotate(-9deg); }
 .fan img:nth-child(2) { left: 70px; z-index: 2; transform: translateY(-8px); }
 .fan img:nth-child(3) { left: 140px; transform: rotate(8deg); }
+.fan img:hover { z-index: 3; transform: translateY(-12px) rotate(0); }
 a { color: var(--accent); text-underline-offset: 2px; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
@@ -432,8 +433,13 @@ syncChips();
   document.getElementById("stats").innerHTML = [
     `共 <b>${uniq}</b> 本`, `0–3 歲 <b>${n("0-3")}</b> 本`, `3–5 歲 <b>${n("3-5")}</b> 本`, `${ys[0]}–${ys.at(-1)} 年手冊`,
   ].map(t => `<li>${t}</li>`).join("");
-  const picks = DATA.books.filter(b => b.year === years[0] && b.cover_file).slice(0, 3);
-  document.getElementById("fan").innerHTML = picks.map(b => `<img src="${esc(coverSrc(b.cover_file))}" alt="">`).join("");
+  // Three random covers on every visit.
+  const pool = [...new Map(DATA.books.filter(b => b.cover_file).map(b => [b.isbn, b])).values()];
+  for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+  const picks = pool.slice(0, 3);
+  const fan = document.getElementById("fan");
+  fan.innerHTML = picks.map(b => `<img src="${esc(coverSrc(b.cover_file))}" alt="" title="${esc(b.title)}" data-key="${esc(b.isbn + "|" + b.year)}">`).join("");
+  fan.addEventListener("click", e => { const k = e.target.closest("img")?.dataset.key; if (k) openDetail(k); });
 })();
 const nameKey = n => n.replace(/[（(][^）)]*[）)]/g, "").replace(/[\s．‧・·.]/g, "");
 function creators(b) {
