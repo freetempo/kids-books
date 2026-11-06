@@ -91,11 +91,15 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .book h3 { font-family: var(--f-title); font-size: 1.25rem; line-height: 1.35; }
 .by { font-size: .82rem; color: var(--ink); opacity: .85; overflow-wrap: anywhere; }
 .pub { font-size: .82rem; color: var(--ink); opacity: .85; margin-top: -4px; }
+.ihead, .ibody { display: contents; }
 .shelf.rows { grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr)); gap: 16px; }
-.book.row { flex-direction: row; align-items: stretch; }
-.book.row .cover { width: 150px; flex: none; height: auto; min-height: 190px; padding: 14px 12px; align-items: flex-start; }
-.book.row .cover img { max-height: 200px; }
-.book.row .info { flex: 1; padding: 14px 16px 14px; }
+.book.row { display: grid; grid-template-columns: 132px minmax(0, 1fr); grid-template-areas: "cover head" "cover body"; column-gap: 16px; padding: 16px; }
+.book.row .info { display: contents; }
+.book.row .cover { grid-area: cover; align-self: start; height: auto; padding: 0; background: none; }
+.book.row .cover img { width: 100%; max-height: 190px; object-fit: contain; object-position: top; }
+.book.row .ihead, .book.row .ibody { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.book.row .ihead { grid-area: head; }
+.book.row .ibody { grid-area: body; margin-top: 6px; }
 .book.row h3 { font-size: 1.15rem; }
 .sum { margin: 2px 0 0; font-size: .9rem; }
 
@@ -227,7 +231,7 @@ footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px;
 .fgrid p.sub { font-size: .78rem; }
 .fgrid b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
 .fline { margin: 0; padding-top: 12px; border-top: 1px dashed var(--line); font-size: .78rem; text-align: center; }
-@media (max-width: 480px) { .shelf.grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 10px; } .tile .tt { font-size: .78rem; } .tile .ta { font-size: .62rem; padding: 0 5px; } .wrap { padding-inline: 16px; } .cover { height: 220px; } .book.row .cover { width: 104px; min-height: 0; padding: 10px 8px; } .book.row .cover img { max-height: 150px; } .count { white-space: nowrap; font-size: .82rem; } .view { flex: 1 1 100%; } .view button { padding: 7px 6px; font-size: .82rem; gap: 4px; white-space: nowrap; } .actions { gap: 6px; } .btn { padding: 4px 10px; } .frow { grid-template-columns: 1fr; gap: 4px; } .frow .lbl { padding-top: 0; } .actions .spacer { display: none; } .searchrow { flex-wrap: wrap; } .search { flex-basis: 100%; } }
+@media (max-width: 480px) { .shelf.grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 10px; } .tile .tt { font-size: .78rem; } .tile .ta { font-size: .62rem; padding: 0 5px; } .wrap { padding-inline: 16px; } .cover { height: 220px; } .book.row { grid-template-columns: 88px minmax(0, 1fr); grid-template-areas: "cover head" "body body"; column-gap: 12px; padding: 14px; } .book.row .cover img { max-height: 124px; } .book.row .ibody { margin-top: 10px; } .book.row h3 { font-size: 1.05rem; } .count { white-space: nowrap; font-size: .82rem; } .view { flex: 1 1 100%; } .view button { padding: 7px 6px; font-size: .82rem; gap: 4px; white-space: nowrap; } .actions { gap: 6px; } .btn { padding: 4px 10px; } .frow { grid-template-columns: 1fr; gap: 4px; } .frow .lbl { padding-top: 0; } .actions .spacer { display: none; } .searchrow { flex-wrap: wrap; } .search { flex-basis: 100%; } }
 @media (max-width: 720px) { .hero { grid-template-columns: 1fr; } .hero-side { grid-row: 1; justify-items: start; } .fan { display: none; } }
 </style>
 
@@ -531,16 +535,20 @@ function card(b, inDetail, row) {
   return `<article class="book${row ? " row" : ""}${on("read") ? " is-read" : ""}" data-isbn="${esc(b.isbn)}">
     <div class="cover">${b.cover_file ? `<img src="${esc(coverSrc(b.cover_file))}" alt="《${esc(b.title)}》封面" loading="lazy">` : ""}</div>
     <div class="info">
+      <div class="ihead">
       <div class="tags"><span class="tag age">${ageOf(b) === "0-3" ? "0–3 歲" : "3–5 歲"}</span>${catsOf(b).map(c => `<span class="tag">${esc(c)}</span>`).join("")}${b.local_creation ? `<span class="tag warm">本土創作</span>` : ""}${again.length ? `<span class="tag warm">${again.join("、")} 也入選</span>` : ""}</div>
       <h3><a href="${esc(SANMIN(b.isbn))}" target="_blank" rel="noopener">${esc(b.title)}</a></h3>
       <div class="by">${esc(b.author)}</div>
       <div class="pub">出版社：${esc(b.publisher)}</div>
+      </div>
+      <div class="ibody">
       <p class="sum">${esc(b.summary)}</p>
       <div class="shop">介紹與購買：<a href="${esc(SANMIN(b.isbn))}" target="_blank" rel="noopener">三民</a> · <a href="${esc(BOOKS_TW(b.isbn))}" target="_blank" rel="noopener">博客來</a></div>
       <div class="marks">${["read", "fav", "buy"].map(k => `<button class="mk" data-k="${k}" aria-pressed="${on(k)}">${ICON[k]}${LABEL[k]}</button>`).join("")}</div>
       ${holdings(b)}
       ${noteBox(b)}
       ${sameCreator(b)}
+      </div>
     </div>
   </article>`;
 }
