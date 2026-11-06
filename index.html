@@ -136,8 +136,8 @@ details.fold .preview { color: var(--muted); }
 .notetext { font-size: .84rem; background: var(--sun-soft); color: var(--ink); border-radius: 8px; padding: 6px 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .tile .tm .note { background: var(--sun); }
 .resultbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: -6px; }
-.view { display: inline-flex; flex: none; gap: 2px; padding: 3px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 1px 2px rgba(30,40,50,.06); }
-.view button { appearance: none; border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .88rem; font-weight: 500; padding: 6px 14px; border-radius: 9px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.view { display: inline-grid; grid-template-columns: 1fr 1fr; flex: none; gap: 2px; padding: 3px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 1px 2px rgba(30,40,50,.06); }
+.view button { appearance: none; border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .88rem; font-weight: 500; padding: 6px 14px; border-radius: 9px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
 .view button:hover { color: var(--ink); }
 .view svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
 .view button[aria-pressed="true"] { background: var(--accent); color: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
