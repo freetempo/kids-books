@@ -1,0 +1,781 @@
+<title>親子共讀手冊書單</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* Layout: a bookshelf grid of cover-first cards; filters for year, category and my marks; each card carries read / favourite / want-to-buy toggles and Taoyuan library holdings */
+:root {
+  --bg: #f6f7f2; --surface: #ffffff; --ink: #23262b; --muted: #636a72; --line: #e1e4dc;
+  --accent: #1f5f8b; --accent-soft: #e2edf5;
+  --sun: #8a5a00; --sun-soft: #fdf0cf;
+  --pick: #ffc94a; --pick-ink: #3d2a00;
+  --read: #2e7d4f; --read-soft: #e0f1e6; --fav: #c0392b; --fav-soft: #fbe3e0; --buy: #7a4fb0; --buy-soft: #efe6fa;
+  --shadow: 0 1px 2px rgba(30,40,50,.08), 0 6px 18px rgba(30,40,50,.08);
+  --f-title: "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif;
+  --f-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15181c; --surface: #1e2227; --ink: #e8eaed; --muted: #a0a7af; --line: #2e333a;
+  --accent: #8cc4ea; --accent-soft: #1d3446; --sun: #f3c561; --sun-soft: #3a2e12; --pick: #f3c561; --pick-ink: #2a1d00;
+  --read: #7fd3a0; --read-soft: #18352a; --fav: #ff9a8f; --fav-soft: #3d1f1c; --buy: #c9a6f5; --buy-soft: #2e2440;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25); color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #15181c; --surface: #1e2227; --ink: #e8eaed; --muted: #a0a7af; --line: #2e333a;
+  --accent: #8cc4ea; --accent-soft: #1d3446; --sun: #f3c561; --sun-soft: #3a2e12; --pick: #f3c561; --pick-ink: #2a1d00;
+  --read: #7fd3a0; --read-soft: #18352a; --fav: #ff9a8f; --fav-soft: #3d1f1c; --buy: #c9a6f5; --buy-soft: #2e2440;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25); color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.7; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 32px 72px; display: grid; gap: 20px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 32px; align-items: end; padding-top: 4px; }
+.eyebrow { margin: 0 0 6px; font-size: .78rem; letter-spacing: .12em; color: var(--accent); font-weight: 700; }
+h1 { font-family: var(--f-title); font-size: clamp(2rem, 4.6vw, 3rem); line-height: 1.15; letter-spacing: .02em; }
+.lede { margin: 10px 0 0; color: var(--muted); max-width: 40em; }
+.stats { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 0; font-size: .8rem; color: var(--muted); }
+.stats li + li::before { content: "·"; margin: 0 8px; }
+.stats b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.hero-side { display: grid; justify-items: end; gap: 18px; align-self: stretch; align-content: space-between; }
+.fan { position: relative; width: 250px; height: 150px; }
+.fan img { cursor: pointer; transition: transform .2s; position: absolute; bottom: 0; height: 138px; width: auto; max-width: 112px; object-fit: cover; border-radius: 4px; box-shadow: 0 6px 16px rgba(20,30,40,.22); border: 3px solid var(--surface); }
+.fan img:nth-child(1) { left: 0; transform: rotate(-9deg); }
+.fan img:nth-child(2) { left: 70px; z-index: 2; transform: translateY(-8px); }
+.fan img:nth-child(3) { left: 140px; transform: rotate(8deg); }
+.fan img:hover { z-index: 3; transform: translateY(-12px) rotate(0); }
+a { color: var(--accent); text-underline-offset: 2px; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.theme { display: inline-flex; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); padding: 2px; }
+.theme button { appearance: none; border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .76rem; padding: 2px 10px; border-radius: 99px; cursor: pointer; }
+.theme button[aria-pressed="true"] { background: var(--accent); color: var(--surface); }
+
+.bar { display: grid; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; box-shadow: 0 1px 2px rgba(30,40,50,.05); }
+.searchrow { display: flex; gap: 10px; align-items: center; }
+.search { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 0 14px; }
+.search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.search svg { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.actions .spacer { flex: 1 1 auto; }
+.sortl { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--muted); }
+.linkbtn { appearance: none; border: 0; background: transparent; font: inherit; font-size: .84rem; color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; gap: 2px; padding: 4px 2px; }
+.linkbtn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .15s; }
+.bar.collapsed .linkbtn svg { transform: rotate(180deg); }
+#filters { background: var(--bg); border-radius: 12px; padding: 12px 14px; display: grid; gap: 10px; }
+.frow { display: grid; grid-template-columns: 4.6em minmax(0, 1fr); gap: 8px; align-items: start; }
+.frow .lbl { font-size: .8rem; color: var(--muted); padding-top: 4px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.grp { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.grp > .lbl { font-size: .82rem; color: var(--muted); width: 3.2em; flex: none; }
+.chip { appearance: none; font: inherit; font-size: .86rem; padding: 2px 13px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+#q { flex: 1 1 auto; min-width: 0; font: inherit; color: var(--ink); background: transparent; border: 0; outline: 0; padding: 10px 0; }
+.count { margin: 0 2px; white-space: nowrap; font-size: .9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 22px; align-items: start; }
+.book { background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.cover { background: var(--accent-soft); height: 250px; padding: 16px; display: flex; align-items: center; justify-content: center; }
+.cover img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 3px; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+.info { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag { font-size: .74rem; padding: 0 9px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); line-height: 1.9; }
+.tag.warm { background: var(--sun-soft); color: var(--sun); }
+.tag.age { background: var(--ink); color: var(--surface); font-weight: 500; }
+.book h3 a { color: inherit; text-decoration: none; }
+.book h3 a:hover { color: var(--accent); text-decoration: underline; }
+.shop { font-size: .8rem; color: var(--muted); }
+.shopbtn { display: inline-flex; align-items: center; gap: 3px; font-size: .78rem; padding: 2px 9px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); text-decoration: none; }
+.shopbtn:hover { color: var(--accent); border-color: var(--accent); }
+.shopbtn svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.book h3 { font-family: var(--f-title); font-size: 1.25rem; line-height: 1.35; }
+.by { font-size: .82rem; color: var(--ink); opacity: .85; overflow-wrap: anywhere; }
+.pub { font-size: .82rem; color: var(--ink); opacity: .85; margin-top: -4px; }
+.shelf.rows { grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr)); gap: 16px; }
+.book.row { flex-direction: row; align-items: stretch; }
+.book.row .cover { width: 150px; flex: none; height: auto; min-height: 190px; padding: 14px 12px; align-items: flex-start; }
+.book.row .cover img { max-height: 200px; }
+.book.row .info { flex: 1; padding: 14px 16px 14px; }
+.book.row h3 { font-size: 1.15rem; }
+.sum { margin: 2px 0 0; font-size: .9rem; }
+
+.marks { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.mk { appearance: none; font: inherit; font-size: .8rem; display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 99px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; }
+.mk svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mk[data-k="read"][aria-pressed="true"] { background: var(--read-soft); color: var(--read); border-color: var(--read); }
+.mk[data-k="fav"][aria-pressed="true"] { background: var(--fav-soft); color: var(--fav); border-color: var(--fav); }
+.mk[data-k="fav"][aria-pressed="true"] svg { fill: currentColor; }
+.mk[data-k="buy"][aria-pressed="true"] { background: var(--buy-soft); color: var(--buy); border-color: var(--buy); }
+.book.is-read .cover { opacity: .75; }
+
+details.lib { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 8px; font-size: .84rem; }
+details.lib summary { cursor: pointer; color: var(--ink); }
+details.lib ul { list-style: none; margin: 6px 0 4px; padding: 0; display: grid; gap: 2px; }
+details.lib li { display: flex; justify-content: space-between; gap: 10px; }
+details.lib li .n { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+details.lib li .n b { color: var(--read); font-weight: 500; }
+.libnone { font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); margin-top: 6px; padding-top: 8px; }
+
+.empty { color: var(--muted); }
+.mine-row { border-top: 1px dashed var(--line); padding-top: 10px; }
+.mine-row .lbl { font-weight: 700; color: var(--ink); }
+.chip.mc { display: inline-flex; align-items: center; gap: 4px; }
+#m-fav { background: var(--fav-soft); border-color: var(--fav-soft); color: var(--fav); }
+#m-buy { background: var(--buy-soft); border-color: var(--buy-soft); color: var(--buy); }
+#m-read { background: var(--read-soft); border-color: var(--read-soft); color: var(--read); }
+#m-unread { background: var(--bg); border-color: var(--line); }
+.chip.mc svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+#m-fav[aria-pressed="true"] { background: var(--fav); border-color: var(--fav); color: var(--surface); }
+#m-fav[aria-pressed="true"] svg { fill: currentColor; }
+#m-buy[aria-pressed="true"] { background: var(--buy); border-color: var(--buy); color: var(--surface); }
+#m-read[aria-pressed="true"] { background: var(--read); border-color: var(--read); color: var(--surface); }
+#m-unread[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.btn.pick { background: var(--pick); border-color: var(--pick); color: var(--pick-ink); font-weight: 700; }
+.btn.pick:hover { color: var(--pick-ink); border-color: var(--sun); filter: brightness(1.04); }
+.btn.pick svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#pick-again { background: var(--pick); border-color: var(--pick); color: var(--pick-ink); font-weight: 700; }
+.pickhead { color: var(--sun) !important; }
+.snap { color: var(--muted); font-size: .76rem; }
+details.fold { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 8px; font-size: .84rem; }
+details.fold summary { cursor: pointer; color: var(--ink); }
+details.fold[open] summary { margin-bottom: 8px; }
+details.fold .preview { color: var(--muted); }
+.same .row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
+.same button { appearance: none; border: 0; background: transparent; padding: 0; font: inherit; color: inherit; cursor: pointer; width: 76px; flex: none; display: grid; gap: 4px; text-align: left; }
+.same .sc { height: 96px; background: var(--accent-soft); border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 5px; }
+.same img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 2px; }
+.same span.st { font-size: .74rem; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.note textarea { width: 100%; min-height: 64px; font: inherit; font-size: .88rem; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; resize: vertical; }
+.note .saved { display: block; font-size: .74rem; color: var(--muted); min-height: 1em; }
+.notetext { font-size: .84rem; background: var(--sun-soft); color: var(--ink); border-radius: 8px; padding: 6px 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.tile .tm .note { background: var(--sun); }
+.resultbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: -6px; }
+.view { display: inline-grid; grid-template-columns: repeat(3, 1fr); flex: none; gap: 2px; padding: 3px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 1px 2px rgba(30,40,50,.06); }
+.view button { appearance: none; border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .88rem; font-weight: 500; padding: 6px 14px; border-radius: 9px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.view button:hover { color: var(--ink); }
+.view svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.view button[aria-pressed="true"] { background: var(--accent); color: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+.shelf.grid { grid-template-columns: repeat(auto-fill, minmax(min(46%, 132px), 1fr)); gap: 16px 14px; }
+.tile { appearance: none; border: 0; background: transparent; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.tile .tc { position: relative; background: var(--accent-soft); border-radius: 8px; aspect-ratio: 3 / 4; display: flex; align-items: center; justify-content: center; padding: 8px; overflow: hidden; }
+.tile img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 2px; box-shadow: 0 1px 5px rgba(0,0,0,.18); }
+.tile:hover .tc, .tile:focus-visible .tc { outline: 2px solid var(--accent); outline-offset: 1px; }
+.tile .tt { font-size: .86rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tile .ta { position: absolute; left: 6px; top: 6px; font-size: .68rem; padding: 0 7px; border-radius: 99px; background: var(--ink); color: var(--surface); line-height: 1.8; }
+.tile .tm { position: absolute; right: 6px; top: 6px; display: flex; gap: 3px; }
+.tile .tm { gap: 4px; }
+.tile .tm span { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: #fff; border: 2px solid var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.3); }
+.tile .tm svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.tile .tm .read { background: var(--read); } .tile .tm .fav { background: var(--fav); } .tile .tm .fav svg { fill: currentColor; } .tile .tm .buy { background: var(--buy); }
+.tile .tl { display: flex; flex-wrap: wrap; gap: 4px; margin-top: -2px; }
+.tile .tl span { font-size: .7rem; line-height: 1.7; padding: 0 7px; border-radius: 99px; }
+.tile .tl .read { background: var(--read-soft); color: var(--read); } .tile .tl .fav { background: var(--fav-soft); color: var(--fav); } .tile .tl .buy { background: var(--buy-soft); color: var(--buy); }
+.tile.is-read img { opacity: .6; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { appearance: none; font: inherit; font-size: .86rem; padding: 4px 13px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn.primary:hover { color: var(--surface); filter: brightness(1.08); }
+select#sort { font: inherit; font-size: .84rem; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.fsum { font-size: .84rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 8px 12px; }
+.bar:not(.collapsed) .fsum { display: none; }
+.bar.collapsed #filters { display: none; }
+.dnav { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.dnav .pos { font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.dnav .grpb { display: flex; gap: 6px; }
+.dnav button { appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: .9rem; min-width: 36px; height: 34px; padding: 0 10px; border-radius: 8px; cursor: pointer; }
+.dnav button:disabled { opacity: .35; cursor: default; }
+.pickhead { padding: 14px 16px 0; text-align: center; font-family: var(--f-title); font-size: 1.3rem; color: var(--accent); }
+.pickhead:empty { display: none; }
+.pickagain { display: flex; justify-content: center; padding: 0 16px 16px; }
+.pickagain:empty { display: none; }
+@keyframes flipin { from { transform: perspective(900px) rotateY(90deg); opacity: .2; } to { transform: perspective(900px) rotateY(0); opacity: 1; } }
+.flip .cover img { animation: flipin .7s cubic-bezier(.2,.8,.2,1); }
+@media (prefers-reduced-motion: reduce) { .flip .cover img { animation: none; } }
+dialog.panel { border: 0; padding: 0; border-radius: 14px; width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 48px); background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+dialog.panel::backdrop { background: rgba(10,14,20,.55); }
+.panel .ph { position: sticky; top: 0; background: var(--surface); display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.panel .ph h2 { font-family: var(--f-title); font-size: 1.3rem; }
+.panel .pb { padding: 14px 16px 18px; display: grid; gap: 14px; }
+.panel h3 { font-size: .95rem; }
+.panel .x { appearance: none; border: 0; background: transparent; font-size: 1.4rem; color: var(--muted); cursor: pointer; }
+.panel ol { margin: 0; padding-left: 1.4em; display: grid; gap: 6px; font-size: .9rem; }
+.panel ol .meta { color: var(--muted); font-size: .8rem; }
+.panel textarea { width: 100%; min-height: 84px; font: .82rem/1.5 ui-monospace, Menlo, monospace; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px; resize: vertical; }
+.panel .note { font-size: .8rem; color: var(--muted); margin: 0; }
+.help ul { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; font-size: .9rem; }
+.help p { margin: 0; font-size: .9rem; }
+.panel .msg { font-size: .82rem; color: var(--read); min-height: 1.2em; }
+.panel section { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 14px; }
+.panel .pb > section:first-child { border-top: 0; padding-top: 0; }
+dialog#detail { border: 0; padding: 0; border-radius: 14px; width: min(440px, calc(100vw - 32px)); max-height: calc(100vh - 48px); background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+dialog#detail::backdrop { background: rgba(10,14,20,.55); }
+dialog#detail .book { box-shadow: none; border-radius: 0; }
+dialog#detail .close { position: sticky; top: 0; float: right; margin: 8px 8px -44px 0; z-index: 2; appearance: none; border: 0; width: 34px; height: 34px; border-radius: 50%; background: var(--surface); color: var(--ink); font-size: 1.2rem; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px; display: grid; gap: 16px; color: var(--muted); font-size: .84rem; line-height: 1.65; }
+.fgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 18px 24px; }
+.fgrid section { min-width: 0; display: grid; gap: 4px; align-content: start; }
+.fgrid h4 { margin: 0; font-size: .78rem; letter-spacing: .08em; color: var(--ink); font-weight: 700; }
+.fgrid p { margin: 0; }
+.fgrid p.sub { font-size: .78rem; }
+.fgrid b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.fline { margin: 0; padding-top: 12px; border-top: 1px dashed var(--line); font-size: .78rem; text-align: center; }
+@media (max-width: 480px) { .shelf.grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 10px; } .tile .tt { font-size: .78rem; } .tile .ta { font-size: .62rem; padding: 0 5px; } .wrap { padding-inline: 16px; } .cover { height: 220px; } .book.row .cover { width: 104px; min-height: 0; padding: 10px 8px; } .book.row .cover img { max-height: 150px; } .count { white-space: nowrap; font-size: .82rem; } .view button { padding: 6px 9px; font-size: .8rem; gap: 4px; } .frow { grid-template-columns: 1fr; gap: 4px; } .frow .lbl { padding-top: 0; } .actions .spacer { display: none; } .searchrow { flex-wrap: wrap; } .search { flex-basis: 100%; } }
+@media (max-width: 720px) { .hero { grid-template-columns: 1fr; } .hero-side { grid-row: 1; justify-items: start; } .fan { display: none; } }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">國立臺灣圖書館 · 親子共讀手冊</p>
+      <h1>親子共讀手冊書單</h1>
+      <p class="lede">教育部「閱讀起步走」計畫推薦的 0–3 歲、3–5 歲繪本，整理自國立臺灣圖書館的《親子共讀手冊》。每本附封面、簡介和桃園市圖館藏，還能標記讀過、最愛、想買。</p>
+      <ul class="stats" id="stats"></ul>
+    </div>
+    <div class="hero-side">
+      <div class="theme" role="group" aria-label="顯示模式">
+        <button id="th-light" data-theme="light" aria-pressed="true" title="淺色">淺色</button>
+        <button id="th-dark" data-theme="dark" aria-pressed="false" title="深色">深色</button>
+        <button id="th-system" data-theme="system" aria-pressed="false" title="跟隨系統">自動</button>
+      </div>
+      <div class="fan" id="fan" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <div class="bar" id="bar">
+    <div class="searchrow">
+      <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><input type="search" id="q" placeholder="搜尋書名、作者或分館，例如 龍潭" aria-label="搜尋"></label>
+    </div>
+    <div class="actions">
+      <button class="btn pick" id="pick"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/></svg>今晚讀哪本？</button>
+      <button class="btn" id="open-list">我的清單</button>
+      <button class="btn" id="open-help">使用說明</button>
+      <span class="spacer"></span>
+      <label class="sortl">排序<select id="sort" aria-label="排序">
+        <option value="order">手冊順序</option>
+        <option value="avail">在架最多</option>
+        <option value="title">書名</option>
+      </select></label>
+      <button class="linkbtn" id="filter-toggle" aria-expanded="true" aria-controls="filters"><span id="ft-label">收起篩選</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+    </div>
+    <div class="fsum" id="fsum"></div>
+    <div id="filters">
+      <div class="frow" role="group" aria-label="年齡"><span class="lbl">年齡</span><span class="chips">
+        <button class="chip" id="a-all" data-age="" aria-pressed="true">全部</button>
+        <button class="chip" id="a-03" data-age="0-3" aria-pressed="false">0–3 歲</button>
+        <button class="chip" id="a-35" data-age="3-5" aria-pressed="false">3–5 歲</button>
+      </span></div>
+      <div class="frow" role="group" aria-label="年度"><span class="lbl">年度</span><span class="chips" id="years"></span></div>
+      <div class="frow" role="group" aria-label="手冊分類"><span class="lbl">分類</span><span class="chips" id="cats"></span></div>
+      <div class="frow mine-row" role="group" aria-label="我的標記"><span class="lbl">我的標記</span><span class="chips">
+        <button class="chip" id="m-all" data-mine="" aria-pressed="true">不限</button>
+        <button class="chip mc" id="m-fav" data-mine="fav" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>最愛</button>
+        <button class="chip mc" id="m-buy" data-mine="buy" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 5h2l2 10h10l2-7H7"/><circle cx="9" cy="19" r="1.3"/><circle cx="17" cy="19" r="1.3"/></svg>想買</button>
+        <button class="chip mc" id="m-read" data-mine="read" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>讀過</button>
+        <button class="chip mc" id="m-unread" data-mine="unread" aria-pressed="false">還沒讀</button>
+      </span></div>
+    </div>
+  </div>
+  <div class="resultbar">
+    <p class="count" id="count" aria-live="polite"></p>
+    <span class="view" role="group" aria-label="顯示方式">
+      <button id="v-grid" data-view="grid" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1"/></svg>封面牆</button>
+      <button id="v-row" data-view="row" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><rect x="5" y="5.8" width="3.5" height="3.4" rx=".4" fill="currentColor" stroke="none"/><rect x="5" y="14.8" width="3.5" height="3.4" rx=".4" fill="currentColor" stroke="none"/><path d="M11 7.5h7M11 16.5h7"/></svg>橫向</button><button id="v-list" data-view="list" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="3" width="8" height="18" rx="1.5"/><rect x="13.5" y="3" width="8" height="18" rx="1.5"/><rect x="4.5" y="5" width="4" height="5" rx=".5" fill="currentColor" stroke="none"/><rect x="15.5" y="5" width="4" height="5" rx=".5" fill="currentColor" stroke="none"/><path d="M5 13.5h3M5 16.5h3M16 13.5h3M16 16.5h3"/></svg>詳細</button>
+    </span>
+  </div>
+
+  <section class="shelf" id="shelf"></section>
+  <p class="empty" id="empty" hidden>沒有符合的書。</p>
+  <dialog id="detail" aria-label="書籍詳細資訊">
+    <div class="dnav"><div class="grpb"><button id="d-prev" aria-label="上一本">‹</button><button id="d-next" aria-label="下一本">›</button></div><span class="pos" id="d-pos"></span><button id="detail-close" aria-label="關閉">×</button></div>
+    <div class="pickhead" id="pickhead"></div>
+    <div id="detail-body"></div>
+    <div class="pickagain" id="pickagain"></div>
+  </dialog>
+  <dialog class="panel" id="helpdlg" aria-labelledby="help-title">
+    <div class="ph"><h2 id="help-title">使用說明</h2><button class="x" id="help-close" aria-label="關閉">×</button></div>
+    <div class="pb help">
+      <section>
+        <h3>可以做什麼</h3>
+        <ul>
+          <li>用上面的篩選挑年齡、年度、分類；搜尋框可以找書名、作者或分館。</li>
+          <li>「封面牆」只看封面，點封面看詳細；「詳細」一次顯示全部資訊。</li>
+          <li>每本書可以標「讀過」「最愛」「想買」，也可以寫筆記。</li>
+          <li>「今晚讀哪本？」會從目前篩選的書裡隨機抽一本，優先抽還沒讀過的。</li>
+          <li>「我的清單」可以把最愛、想買、讀過的書複製成文字，貼到 LINE 或備忘錄。</li>
+        </ul>
+      </section>
+      <section>
+        <h3>標記和筆記存在哪裡</h3>
+        <ul>
+          <li>只存在你現在用的這個瀏覽器，不會上傳，別人看不到。</li>
+          <li>不同瀏覽器之間不會同步：同一支手機的 Safari、Chrome、LINE 裡開的網頁，各自分開存。</li>
+          <li>無痕模式不會存。清除瀏覽器資料、刪掉重裝 App 或換手機，紀錄都會不見。</li>
+          <li>iPhone 的 Safari 有規定：一個網站超過 7 天沒打開，可能會被清掉資料。</li>
+        </ul>
+      </section>
+      <section>
+        <h3>建議的打開方式</h3>
+        <p><b>iPhone：</b>用 Safari 打開這個網頁 → 點下方的分享按鈕 → 選「加入主畫面」。之後都從主畫面的圖示打開，不受 7 天規定影響，用起來像一個 App。</p>
+        <p><b>Android：</b>用 Chrome 打開 → 點右上角選單 → 選「加到主畫面」。</p>
+        <p><b>從 LINE、Messenger 點開：</b>可以看、可以用，但這類 App 內建的瀏覽器有時會清掉資料，不建議當成主要的打開方式。</p>
+        <p class="note">主畫面的圖示、Safari、LINE 裡的紀錄彼此不相通。換地方用時，請用下面的方法搬過去。</p>
+      </section>
+      <section>
+        <h3>搬家和備份</h3>
+        <ol>
+          <li>在原本的地方打開「我的清單」，按最下面的「複製我的標記代碼」。</li>
+          <li>到新的瀏覽器或手機打開這個網頁，同樣打開「我的清單」，把代碼貼進框裡，按「匯入」。</li>
+        </ol>
+        <p class="note">匯入是合併，不會蓋掉原本的標記。建議偶爾複製一份代碼存在備忘錄，紀錄不見時可以救回來。代碼裡只有書的 ISBN 和你寫的筆記。</p>
+      </section>
+    </div>
+  </dialog>
+  <dialog class="panel" id="listdlg" aria-labelledby="list-title">
+    <div class="ph"><h2 id="list-title">我的清單</h2><button class="x" id="list-close" aria-label="關閉">×</button></div>
+    <div class="pb">
+      <div class="grp" role="group" aria-label="清單內容" id="list-which">
+        <button class="chip" data-which="fav" aria-pressed="true">最愛</button>
+        <button class="chip" data-which="buy" aria-pressed="false">想買</button>
+        <button class="chip" data-which="read" aria-pressed="false">讀過</button>
+      </div>
+      <ol id="list-items"></ol>
+      <div class="tools"><button class="btn primary" id="list-copy">複製清單文字</button><button class="btn" id="list-print" hidden>列印</button></div>
+      <div class="msg" id="list-msg" aria-live="polite"></div>
+      <section>
+        <h3>把標記和筆記搬到另一個瀏覽器</h3>
+        <p class="note">標記只存在這個瀏覽器。在這裡複製代碼，到另一台手機或電腦打開這個書單，貼進下面的框按「匯入」，兩邊的標記和筆記就會合併。代碼裡是書的 ISBN 和你寫的筆記，沒有其他資料。</p>
+        <div class="tools"><button class="btn" id="code-copy">複製我的標記代碼</button></div>
+        <textarea id="code-in" placeholder="在這裡貼上另一個瀏覽器複製的代碼" aria-label="貼上標記代碼"></textarea>
+        <div class="tools"><button class="btn" id="code-import">匯入（合併）</button></div>
+        <div class="msg" id="code-msg" aria-live="polite"></div>
+      </section>
+    </div>
+  </dialog>
+
+  <footer>
+    <div class="fgrid">
+      <section>
+        <h4>資料來源</h4>
+        <p>國立臺灣圖書館《親子共讀手冊》，下載自<a href="https://www.pccr.tw/閱讀手冊/" target="_blank" rel="noopener">嬰幼兒閱讀推廣計畫</a>。順序照手冊目錄，分類是手冊標的發展面向。</p>
+        <p class="sub">2026 年的書單還沒公布，之後改由國家圖書館辦理。</p>
+      </section>
+      <section id="holdnote">
+        <h4>館藏</h4>
+        <p><b>__HOLD_DATE__</b> 從<a href="https://webpac.typl.gov.tw/" target="_blank" rel="noopener">桃園市立圖書館</a>抓的快照。借閱狀態會變，借之前請點書裡的連結看最新狀況。</p>
+      </section>
+      <section>
+        <h4>你的紀錄</h4>
+        <p>讀過、最愛、想買和筆記只存在這個瀏覽器，不會上傳。換瀏覽器或清除資料就會不見，怎麼備份請看「使用說明」。</p>
+      </section>
+      <section>
+        <h4>內容說明</h4>
+        <p>簡介依手冊推薦語整理改寫，可能和原書略有出入。書名連到三民網路書店。封面版權屬於各出版社，這裡只用來辨識書籍。</p>
+      </section>
+    </div>
+    <p class="fline">個人整理的非官方書單，書目以國立臺灣圖書館公布的手冊為準 · 整理於 __BUILT__<br>Created by <span id="maker">freetempo</span> · 2026</p>
+  </footer>
+</div>
+
+<script>
+const DATA = __DATA__;
+const HOLD = __HOLD__;
+const LINKS = __LINKS__;
+const HOLD_DAY = "__HOLD_DATE__".slice(5).replace("-", "/");
+const ageOf = b => b.age_group?.startsWith("0-3") ? "0-3" : "3-5";
+const SANMIN = isbn => LINKS[isbn] || `https://www.sanmin.com.tw/search?ct=ISBN&qu=${isbn}`;
+const BOOKS_TW = isbn => `https://search.books.com.tw/search/query/key/${isbn}/cat/all`;
+const SEARCH = isbn => `https://webpac.typl.gov.tw/search?searchField=ISBN&searchInput=${encodeURIComponent(isbn)}`;
+const coverSrc = f => "covers/" + f;
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const ICON = {
+  read: '<svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>',
+  fav: '<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  buy: '<svg viewBox="0 0 24 24"><path d="M4 5h2l2 10h10l2-7H7"/><circle cx="9" cy="19" r="1.3"/><circle cx="17" cy="19" r="1.3"/></svg>',
+};
+const LABEL = { read: "讀過", fav: "最愛", buy: "想買" };
+
+// Theme: default light; the choice is a per-browser convenience.
+const root = document.documentElement;
+function applyTheme(t) {
+  if (t === "system") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", t);
+  document.querySelectorAll(".theme button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.theme === t)));
+}
+let theme = "light";
+try { theme = localStorage.getItem("kb-theme") || "light"; } catch (e) {}
+applyTheme(theme);
+document.querySelector(".theme").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  applyTheme(b.dataset.theme); try { localStorage.setItem("kb-theme", b.dataset.theme); } catch (e) {}
+});
+
+// Marks: {read:[isbn], fav:[isbn], buy:[isbn]}, kept in this browser only.
+let marks = { read: [], fav: [], buy: [] };
+const LS_KEY = "kb-marks";
+try { const v = JSON.parse(localStorage.getItem(LS_KEY)); if (v) marks = { read: v.read || [], fav: v.fav || [], buy: v.buy || [] }; } catch (e) {}
+function saveMarks() { try { localStorage.setItem(LS_KEY, JSON.stringify(marks)); } catch (e) {} }
+// Notes: {isbn: text}, kept in this browser only.
+let notes = {};
+try { notes = JSON.parse(localStorage.getItem("kb-notes")) || {}; } catch (e) {}
+function saveNotes() { try { localStorage.setItem("kb-notes", JSON.stringify(notes)); } catch (e) {} }
+const NOTE_ICON = '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>';
+
+// Filters
+const state = { age: "", year: "", cat: "", mine: "", q: "", sort: "order" };
+try { state.sort = localStorage.getItem("kb-sort") || "order"; } catch (e) {}
+let savedFilters = null;
+try { savedFilters = JSON.parse(localStorage.getItem("kb-filters")); } catch (e) {}
+function saveFilters() { try { localStorage.setItem("kb-filters", JSON.stringify({ age: state.age, year: state.year, cat: state.cat, mine: state.mine })); } catch (e) {} }
+const catsOf = b => (b.categories || "").split("、").filter(Boolean);
+const years = [...new Set(DATA.books.map(b => b.year))].sort((a, b) => b - a);
+const newest = String(years[0]);
+state.year = newest;
+if (savedFilters) for (const k of ["age", "year", "cat", "mine"]) if (typeof savedFilters[k] === "string") state[k] = savedFilters[k];
+document.getElementById("years").innerHTML =
+  years.map(y => `<button class="chip" id="y-${y}" data-year="${y}" aria-pressed="${String(y) === newest}">${y}</button>`).join("") +
+  (years.length > 1 ? `<button class="chip" id="y-all" data-year="" aria-pressed="false">全部年度</button>` : "");
+const CATS = [...new Set(DATA.books.flatMap(catsOf))];
+CATS.sort((a, b) => DATA.books.filter(x => catsOf(x).includes(b)).length - DATA.books.filter(x => catsOf(x).includes(a)).length);
+document.getElementById("cats").innerHTML =
+  `<button class="chip" id="cat-all" data-cat="" aria-pressed="true">全部</button>` +
+  CATS.map((c, i) => `<button class="chip" id="cat-${i}" data-cat="${esc(c)}" aria-pressed="false">${esc(c)}</button>`).join("") +
+  `<button class="chip" id="cat-tw" data-cat="__tw" aria-pressed="false">本土創作</button>`;
+
+function syncChips() {
+  document.querySelectorAll("#filters .chip").forEach(c => {
+    const key = ["age", "year", "cat", "mine"].find(k => k in c.dataset);
+    c.setAttribute("aria-pressed", String(c.dataset[key] === state[key]));
+  });
+}
+syncChips();
+(function hero() {
+  const uniq = new Set(DATA.books.map(b => b.isbn)).size;
+  const n = a => new Set(DATA.books.filter(b => ageOf(b) === a).map(b => b.isbn)).size;
+  const ys = [...new Set(DATA.books.map(b => b.year))].sort();
+  document.getElementById("stats").innerHTML = [
+    `收錄 ${ys[0]}–${ys.at(-1)} 年的手冊，共 <b>${uniq}</b> 本：適合 0–3 歲的有 <b>${n("0-3")}</b> 本，適合 3–5 歲的有 <b>${n("3-5")}</b> 本。`,
+  ].map(t => `<li>${t}</li>`).join("");
+  // Three random covers on every visit.
+  const pool = [...new Map(DATA.books.filter(b => b.cover_file).map(b => [b.isbn, b])).values()];
+  for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+  const picks = pool.slice(0, 3);
+  const fan = document.getElementById("fan");
+  fan.innerHTML = picks.map(b => `<img src="${esc(coverSrc(b.cover_file))}" alt="" title="${esc(b.title)}" data-key="${esc(b.isbn + "|" + b.year)}">`).join("");
+  fan.addEventListener("click", e => { const k = e.target.closest("img")?.dataset.key; if (k) openDetail(k); });
+})();
+const nameKey = n => n.replace(/[（(][^）)]*[）)]/g, "").replace(/[\s．‧・·.]/g, "");
+function creators(b) {
+  return b.author.split(/[／/]/).flatMap(part => {
+    const [role, names] = part.includes("：") ? part.split("：") : ["", part];
+    if (!/文|圖|作者|繪/.test(role)) return [];
+    return names.split(/[、，,]/).map(nameKey).filter(n => n.length > 1);
+  });
+}
+const BY_CREATOR = new Map();
+for (const b of DATA.books) for (const n of new Set(creators(b))) {
+  if (!BY_CREATOR.has(n)) BY_CREATOR.set(n, []);
+  const arr = BY_CREATOR.get(n);
+  if (!arr.some(x => x.isbn === b.isbn)) arr.push(b);
+}
+function sameCreator(b) {
+  const seen = new Set([b.isbn]), out = [];
+  for (const n of creators(b)) for (const x of BY_CREATOR.get(n) || []) if (!seen.has(x.isbn)) { seen.add(x.isbn); out.push(x); }
+  if (!out.length) return "";
+  return `<details class="same fold"><summary>同作者的其他入選書（${out.length}）</summary><div class="row">${out.map(x =>
+    `<button data-goto="${esc(keyOf(x))}"><span class="sc">${x.cover_file ? `<img src="${esc(coverSrc(x.cover_file))}" alt="" loading="lazy">` : ""}</span><span class="st">${esc(x.title)}</span></button>`).join("")}</div></details>`;
+}
+function noteBox(b) {
+  const t = notes[b.isbn] || "";
+  return `<details class="note fold"><summary>我的筆記${t ? `<span class="preview">：${esc(t.split("\n")[0].slice(0, 24))}${t.length > 24 ? "…" : ""}</span>` : ""}</summary><textarea aria-label="我的筆記" id="note-${esc(b.isbn)}" data-isbn="${esc(b.isbn)}" placeholder="例如：小孩很愛第 5 頁、龍潭分館借過">${esc(t)}</textarea><span class="saved" aria-live="polite"></span></details>`;
+}
+function holdings(b) {
+  const h = HOLD.items?.[b.isbn];
+  const link = h?.record_url || SEARCH(b.isbn);
+  if (!h) return `<div class="libnone"><a href="${esc(SEARCH(b.isbn))}" target="_blank" rel="noopener">查桃園市圖館藏</a></div>`;
+  if (!h.branches?.length) return `<div class="libnone">${h.found === false ? "桃園市圖目錄找不到這本" : "沒有分館資料"} · <a href="${esc(SEARCH(b.isbn))}" target="_blank" rel="noopener">到館藏查詢看看</a></div>`;
+  const avail = h.branches.reduce((n, x) => n + (x.available || 0), 0);
+  const rows = [...h.branches].sort((a, c) => (c.available || 0) - (a.available || 0) || a.branch.localeCompare(c.branch, "zh-Hant"))
+    .map(x => `<li><span>${esc(x.branch)}</span><span class="n">${x.available != null ? `<b>${x.available}</b> / ` : ""}${x.copies} 本</span></li>`).join("");
+  return `<details class="lib"><summary>桃園市圖 ${h.branches.length} 館有${h.branches.some(x => x.available != null) ? `，${avail} 本在架` : ""}<span class="snap">（${HOLD_DAY} 的資料）</span></summary>
+    <ul>${rows}</ul><a href="${esc(link)}" target="_blank" rel="noopener">看最新借閱狀態</a></details>`;
+}
+const EXT = '<svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
+function card(b, inDetail, row) {
+  const again = (b.also_selected_years || []).filter(y => y !== b.year);
+  const on = k => marks[k].includes(b.isbn);
+  return `<article class="book${row ? " row" : ""}${on("read") ? " is-read" : ""}" data-isbn="${esc(b.isbn)}">
+    <div class="cover">${b.cover_file ? `<img src="${esc(coverSrc(b.cover_file))}" alt="《${esc(b.title)}》封面" loading="lazy">` : ""}</div>
+    <div class="info">
+      <div class="tags"><span class="tag age">${ageOf(b) === "0-3" ? "0–3 歲" : "3–5 歲"}</span>${catsOf(b).map(c => `<span class="tag">${esc(c)}</span>`).join("")}${b.local_creation ? `<span class="tag warm">本土創作</span>` : ""}${again.length ? `<span class="tag warm">${again.join("、")} 也入選</span>` : ""}</div>
+      <h3><a href="${esc(SANMIN(b.isbn))}" target="_blank" rel="noopener">${esc(b.title)}</a></h3>
+      <div class="by">${esc(b.author)}</div>
+      <div class="pub">出版社：${esc(b.publisher)}</div>
+      <p class="sum">${esc(b.summary)}</p>
+      <div class="shop">介紹與購買：<a href="${esc(SANMIN(b.isbn))}" target="_blank" rel="noopener">三民</a> · <a href="${esc(BOOKS_TW(b.isbn))}" target="_blank" rel="noopener">博客來</a></div>
+      <div class="marks">${["read", "fav", "buy"].map(k => `<button class="mk" data-k="${k}" aria-pressed="${on(k)}">${ICON[k]}${LABEL[k]}</button>`).join("")}</div>
+      ${holdings(b)}
+      ${noteBox(b)}
+      ${sameCreator(b)}
+    </div>
+  </article>`;
+}
+function tile(b) {
+  const on = k => marks[k].includes(b.isbn);
+  const dots = ["read", "fav", "buy"].filter(on).map(k => `<span class="${k}" title="${LABEL[k]}">${ICON[k]}</span>`).join("") + (notes[b.isbn] ? `<span class="note" title="有筆記">${NOTE_ICON}</span>` : "");
+  return `<button class="tile${on("read") ? " is-read" : ""}" data-isbn="${esc(b.isbn)}" data-year="${b.year}" aria-label="${esc(b.title)}，看詳細">
+    <span class="tc">${b.cover_file ? `<img src="${esc(coverSrc(b.cover_file))}" alt="" loading="lazy">` : ""}<span class="ta">${ageOf(b) === "0-3" ? "0–3" : "3–5"}</span>${dots ? `<span class="tm">${dots}</span>` : ""}</span>
+    <span class="tt">${esc(b.title)}</span>
+    ${["read", "fav", "buy"].some(on) ? `<span class="tl">${["read", "fav", "buy"].filter(on).map(k => `<span class="${k}">${LABEL[k]}</span>`).join("")}</span>` : ""}
+  </button>`;
+}
+let view = "grid";
+try { view = localStorage.getItem("kb-view") || "grid"; } catch (e) {}
+let detailKey = null, navList = [], picking = false;
+const keyOf = b => b.isbn + "|" + b.year;
+const dlg = document.getElementById("detail");
+function showDetail(animate) {
+  const b = DATA.books.find(x => keyOf(x) === detailKey);
+  if (!b) return;
+  const body = document.getElementById("detail-body");
+  body.innerHTML = card(b, true);
+  body.classList.toggle("flip", !!animate);
+  const i = navList.findIndex(x => keyOf(x) === detailKey);
+  document.getElementById("d-prev").disabled = picking || i <= 0;
+  document.getElementById("d-next").disabled = picking || i < 0 || i >= navList.length - 1;
+  document.getElementById("d-pos").textContent = picking ? "" : i >= 0 ? `${i + 1} / ${navList.length}` : "";
+  document.getElementById("pickhead").textContent = picking ? "今晚讀這本！" : "";
+  document.getElementById("pickagain").innerHTML = picking ? `<button class="btn" id="pick-again">再抽一次</button>` : "";
+}
+function openDetail(key, opts = {}) {
+  detailKey = key; picking = !!opts.pick; navList = visibleBooks();
+  showDetail(opts.pick);
+  if (!dlg.open) { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); }
+  dlg.scrollTop = 0;
+}
+function step(d) {
+  if (picking) return;
+  const i = navList.findIndex(x => keyOf(x) === detailKey), j = i + d;
+  if (i < 0 || j < 0 || j >= navList.length) return;
+  detailKey = keyOf(navList[j]); showDetail(); dlg.scrollTop = 0;
+}
+function pick() {
+  let pool = visibleBooks();
+  const unread = pool.filter(b => !marks.read.includes(b.isbn));
+  if (unread.length) pool = unread;
+  if (!pool.length) return;
+  let b = pool[Math.floor(Math.random() * pool.length)];
+  if (pool.length > 1 && dlg.open && keyOf(b) === detailKey) b = pool.find(x => keyOf(x) !== detailKey);
+  openDetail(keyOf(b), { pick: true });
+}
+function matches(b) {
+  if (state.age && ageOf(b) !== state.age) return false;
+  if (state.year && String(b.year) !== state.year) return false;
+  if (state.cat === "__tw" ? !b.local_creation : state.cat && !catsOf(b).includes(state.cat)) return false;
+  const m = state.mine;
+  if (m === "unread" && marks.read.includes(b.isbn)) return false;
+  if (["read", "fav", "buy"].includes(m) && !marks[m].includes(b.isbn)) return false;
+  if (state.q) {
+    const hay = [b.title, b.author, b.publisher, ...(HOLD.items?.[b.isbn]?.branches || []).map(x => x.branch)].join(" ").toLowerCase();
+    if (!state.q.split(/\s+/).every(t => hay.includes(t))) return false;
+  }
+  return true;
+}
+const ORDER = new Map(DATA.books.map((b, i) => [b, i]));
+const availOf = b => HOLD.items?.[b.isbn]?.branches?.reduce((n, x) => n + (x.available || 0), 0) ?? -1;
+function visibleBooks() {
+  // With "全部年度", a book selected in several years is shown once (newest entry).
+  const seen = new Set();
+  const list = DATA.books.filter(matches).sort((a, b) => b.year - a.year || ORDER.get(a) - ORDER.get(b)).filter(b => {
+    if (state.year) return true;
+    if (seen.has(b.isbn)) return false; seen.add(b.isbn); return true;
+  });
+  if (state.sort === "avail") list.sort((a, b) => availOf(b) - availOf(a));
+  if (state.sort === "title") list.sort((a, b) => a.title.localeCompare(b.title, "zh-Hant-TW-u-co-stroke"));
+  return list;
+}
+function filterSummary() {
+  const label = k => document.querySelector(`#filters .chip[data-${k}="${CSS.escape(state[k])}"]`)?.textContent || "";
+  const parts = [state.age ? label("age") : "全部年齡", state.year ? label("year") + " 年" : "全部年度"];
+  if (state.cat) parts.push(label("cat"));
+  if (state.mine) parts.push("我的標記：" + label("mine"));
+  return "目前：" + parts.join("・");
+}
+const openLib = new Set();
+function render() {
+  document.querySelectorAll("details.lib[open]").forEach(d => openLib.add(d.closest(".book").dataset.isbn));
+  const list = visibleBooks();
+  const shelf = document.getElementById("shelf");
+  shelf.classList.toggle("grid", view === "grid");
+  shelf.classList.toggle("rows", view === "row");
+  shelf.innerHTML = list.map(b => view === "grid" ? tile(b) : card(b, false, view === "row")).join("");
+  document.querySelectorAll(".view button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.view === view)));
+  if (dlg.open && !dlg.contains(document.activeElement?.closest?.("textarea"))) showDetail();
+  document.getElementById("fsum").textContent = filterSummary();
+  openLib.forEach(isbn => document.querySelector(`.book[data-isbn="${isbn}"] details.lib`)?.setAttribute("open", ""));
+  document.getElementById("count").textContent = `共 ${list.length} 本`;
+  const empty = document.getElementById("empty");
+  empty.hidden = list.length > 0;
+  empty.textContent = ["fav", "buy", "read"].includes(state.mine) && !marks[state.mine].length
+    ? `還沒有標「${LABEL[state.mine]}」的書。點開一本書，按「${LABEL[state.mine]}」就會出現在這裡。`
+    : "沒有符合的書，試試放寬篩選條件。";
+}
+document.querySelector(".bar").addEventListener("click", e => {
+  const c = e.target.closest(".chip"); if (!c) return;
+  const key = ["age", "year", "cat", "mine"].find(k => k in c.dataset);
+  state[key] = c.dataset[key];
+  c.parentElement.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", String(x === c)));
+  saveFilters(); render();
+});
+document.getElementById("q").addEventListener("input", e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+document.querySelector(".view").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  view = b.dataset.view; try { localStorage.setItem("kb-view", view); } catch (e) {}
+  render();
+});
+document.getElementById("shelf").addEventListener("click", e => {
+  const g = e.target.closest("[data-goto]");
+  if (g) { openDetail(g.dataset.goto); return; }
+  const t = e.target.closest(".tile"); if (!t) return;
+  openDetail(t.dataset.isbn + "|" + t.dataset.year);
+});
+document.getElementById("detail-close").addEventListener("click", () => dlg.close());
+document.getElementById("d-prev").addEventListener("click", () => step(-1));
+document.getElementById("d-next").addEventListener("click", () => step(1));
+dlg.addEventListener("click", e => {
+  if (e.target.closest("#pick-again")) pick();
+  const g = e.target.closest("[data-goto]");
+  if (g) { picking = false; detailKey = g.dataset.goto; showDetail(); dlg.scrollTop = 0; }
+});
+let noteTimer = null;
+document.addEventListener("input", e => {
+  const ta = e.target.closest?.(".note textarea"); if (!ta) return;
+  const isbn = ta.dataset.isbn, v = ta.value.trim();
+  if (v) notes[isbn] = ta.value; else delete notes[isbn];
+  clearTimeout(noteTimer);
+  noteTimer = setTimeout(() => { saveNotes(); ta.parentElement.querySelector(".saved").textContent = "已儲存在這個瀏覽器"; }, 400);
+});
+dlg.addEventListener("close", () => { clearTimeout(noteTimer); saveNotes(); render(); });
+dlg.addEventListener("keydown", e => {
+  if (e.target.closest("input, textarea")) return;
+  if (e.key === "ArrowLeft") { step(-1); e.preventDefault(); }
+  if (e.key === "ArrowRight") { step(1); e.preventDefault(); }
+});
+let touchX = null, touchY = null;
+dlg.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; touchY = e.touches[0].clientY; }, { passive: true });
+dlg.addEventListener("touchend", e => {
+  if (touchX == null) return;
+  const dx = e.changedTouches[0].clientX - touchX, dy = e.changedTouches[0].clientY - touchY;
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+  touchX = null;
+});
+document.getElementById("pick").addEventListener("click", pick);
+const sortSel = document.getElementById("sort");
+sortSel.value = state.sort;
+sortSel.addEventListener("change", () => { state.sort = sortSel.value; try { localStorage.setItem("kb-sort", state.sort); } catch (e) {} render(); });
+
+// Collapsible filters: folded by default on narrow screens.
+const bar = document.getElementById("bar"), ft = document.getElementById("filter-toggle");
+function setFold(folded) {
+  bar.classList.toggle("collapsed", folded); ft.setAttribute("aria-expanded", String(!folded));
+  document.getElementById("ft-label").textContent = folded ? "展開篩選" : "收起篩選";
+}
+setFold(window.matchMedia("(max-width: 640px)").matches);
+ft.addEventListener("click", () => setFold(!bar.classList.contains("collapsed")));
+
+// My list panel: copyable text of marked books, plus moving marks between browsers by code.
+const listDlg = document.getElementById("listdlg");
+let which = "fav";
+const listBooks = () => {
+  const seen = new Set();
+  return DATA.books.filter(b => marks[which].includes(b.isbn) && !seen.has(b.isbn) && seen.add(b.isbn));
+};
+function listText() {
+  return `${LABEL[which]}的書（${listBooks().length} 本）\n` + listBooks().map((b, i) =>
+    `${i + 1}. 《${b.title}》${b.author.replace(/\s+/g, " ")}，${b.publisher}，ISBN ${b.isbn}\n   ${SANMIN(b.isbn)}`).join("\n");
+}
+function renderList() {
+  const items = listBooks();
+  document.getElementById("list-items").innerHTML = items.length
+    ? items.map(b => `<li><a href="${esc(SANMIN(b.isbn))}" target="_blank" rel="noopener">《${esc(b.title)}》</a><div class="meta">${esc(b.author)} · ${esc(b.publisher)} · ISBN ${esc(b.isbn)}${availOf(b) >= 0 ? ` · 桃園市圖 ${availOf(b)} 本在架` : ""}</div></li>`).join("")
+    : `<li style="list-style:none;margin-left:-1.4em;color:var(--muted)">還沒有標「${LABEL[which]}」的書。</li>`;
+  document.getElementById("list-copy").disabled = !items.length;
+  document.getElementById("list-msg").textContent = "";
+}
+document.getElementById("open-list").addEventListener("click", () => { renderList(); listDlg.showModal ? listDlg.showModal() : listDlg.setAttribute("open", ""); });
+document.getElementById("list-close").addEventListener("click", () => listDlg.close());
+const helpDlg = document.getElementById("helpdlg");
+document.getElementById("open-help").addEventListener("click", () => { helpDlg.showModal ? helpDlg.showModal() : helpDlg.setAttribute("open", ""); helpDlg.scrollTop = 0; });
+document.getElementById("help-close").addEventListener("click", () => helpDlg.close());
+helpDlg.addEventListener("click", e => { if (e.target === helpDlg) helpDlg.close(); });
+listDlg.addEventListener("click", e => { if (e.target === listDlg) listDlg.close(); });
+document.getElementById("list-which").addEventListener("click", e => {
+  const c = e.target.closest(".chip"); if (!c) return;
+  which = c.dataset.which;
+  c.parentElement.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", String(x === c)));
+  renderList();
+});
+function copyText(text, msgEl, okMsg) {
+  const fallback = () => {
+    const ta = document.getElementById("code-in"), keep = ta.value;
+    ta.value = text; ta.select();
+    let ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+    ta.value = keep;
+    msgEl.textContent = ok ? okMsg : "沒辦法自動複製，請手動選取文字複製。";
+  };
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(() => { msgEl.textContent = okMsg; }, fallback);
+  else fallback();
+}
+document.getElementById("list-copy").addEventListener("click", () => copyText(listText(), document.getElementById("list-msg"), "已複製，可以貼到 LINE 或備忘錄。"));
+const printBtn = document.getElementById("list-print");
+printBtn.hidden = location.protocol !== "file:";
+printBtn.addEventListener("click", () => {
+  const w = window.open("", "_blank"); if (!w) return;
+  w.document.write(`<!doctype html><meta charset="utf-8"><title>${LABEL[which]}的書</title><style>body{font:15px/1.7 "PingFang TC","Microsoft JhengHei",sans-serif;padding:24px}li{margin-bottom:8px}.m{color:#555;font-size:13px}</style><h1>${LABEL[which]}的書（${listBooks().length} 本）</h1><ol>${listBooks().map(b => `<li>《${esc(b.title)}》<div class="m">${esc(b.author)} · ${esc(b.publisher)} · ISBN ${esc(b.isbn)}</div></li>`).join("")}</ol>`);
+  w.document.close(); w.focus(); w.print();
+});
+const encode = o => "KB1:" + btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+function decode(str) {
+  const t = str.trim().replace(/^KB1:/, "");
+  const o = JSON.parse(decodeURIComponent(escape(atob(t))));
+  const ok = v => Array.isArray(v) && v.every(x => /^\d{10,13}$/.test(String(x)));
+  if (!ok(o.read || []) || !ok(o.fav || []) || !ok(o.buy || [])) throw new Error("bad");
+  return o;
+}
+document.getElementById("code-copy").addEventListener("click", () => {
+  const n = marks.read.length + marks.fav.length + marks.buy.length;
+  const nn = Object.keys(notes).length;
+  copyText(encode({ ...marks, notes }), document.getElementById("code-msg"), `已複製代碼（${n} 個標記${nn ? `、${nn} 則筆記` : ""}）。`);
+});
+document.getElementById("code-import").addEventListener("click", () => {
+  const msg = document.getElementById("code-msg");
+  let o; try { o = decode(document.getElementById("code-in").value); } catch (e) { msg.textContent = "代碼看不懂，請確認整段都有貼上。"; return; }
+  let added = 0;
+  for (const k of ["read", "fav", "buy"]) for (const isbn of o[k] || []) if (!marks[k].includes(String(isbn))) { marks[k].push(String(isbn)); added++; }
+  for (const [isbn, t] of Object.entries(o.notes && typeof o.notes === "object" ? o.notes : {})) {
+    if (!/^\d{10,13}$/.test(isbn) || typeof t !== "string" || !t.trim()) continue;
+    if (!notes[isbn]) { notes[isbn] = t; added++; } else if (!notes[isbn].includes(t)) { notes[isbn] += "\n" + t; added++; }
+  }
+  saveMarks(); saveNotes(); render(); renderList();
+  document.getElementById("code-in").value = "";
+  msg.textContent = added ? `匯入完成，新增 ${added} 筆標記或筆記。` : "這些標記本來就都有了。";
+});
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+function onMark(e) {
+  const b = e.target.closest(".mk"); if (!b) return;
+  const isbn = b.closest(".book").dataset.isbn, k = b.dataset.k, arr = marks[k], i = arr.indexOf(isbn);
+  if (i === -1) arr.push(isbn); else arr.splice(i, 1);
+  saveMarks(); render();
+}
+document.getElementById("shelf").addEventListener("click", onMark);
+dlg.addEventListener("click", onMark);
+document.getElementById("shelf").addEventListener("toggle", e => {
+  const d = e.target; if (!d.matches?.("details.lib")) return;
+  const isbn = d.closest(".book").dataset.isbn; if (d.open) openLib.add(isbn); else openLib.delete(isbn);
+}, true);
+if (!HOLD.items) document.getElementById("holdnote").hidden = true;
+// The address is assembled here so it is not sitting in the page source as plain text for spam crawlers.
+(function () {
+  const addr = ["freetempostudio", "gmail.com"].join("@");
+  const el = document.getElementById("maker");
+  el.innerHTML = `<a href="mailto:${addr}" title="寫信給 ${addr}">freetempo</a>`;
+})();
+render();
+</script>
