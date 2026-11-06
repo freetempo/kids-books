@@ -32,11 +32,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 32px; align-items: end; padding-top: 4px; }
 .eyebrow { margin: 0 0 6px; font-size: .78rem; letter-spacing: .12em; color: var(--accent); font-weight: 700; }
 h1 { font-family: var(--f-title); font-size: clamp(2rem, 4.6vw, 3rem); line-height: 1.15; letter-spacing: .02em; }
-.lede { margin: 10px 0 0; color: var(--muted); max-width: 46ch; }
-.stats { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; }
-.stats li { display: grid; line-height: 1.2; }
-.stats b { font-family: var(--f-title); font-size: 1.5rem; color: var(--ink); font-variant-numeric: tabular-nums; }
-.stats span { font-size: .76rem; color: var(--muted); }
+.lede { margin: 10px 0 0; color: var(--muted); max-width: 40em; }
+.stats { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 0; font-size: .8rem; color: var(--muted); }
+.stats li + li::before { content: "·"; margin: 0 8px; }
+.stats b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
 .hero-side { display: grid; justify-items: end; gap: 18px; align-self: stretch; align-content: space-between; }
 .fan { position: relative; width: 250px; height: 150px; }
 .fan img { position: absolute; bottom: 0; height: 138px; width: auto; max-width: 112px; object-fit: cover; border-radius: 4px; box-shadow: 0 6px 16px rgba(20,30,40,.22); border: 3px solid var(--surface); }
@@ -212,7 +211,7 @@ footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px;
     <div class="hero-text">
       <p class="eyebrow">國立臺灣圖書館 · 親子共讀手冊</p>
       <h1>親子共讀手冊書單</h1>
-      <p class="lede">0–3 歲和 3–5 歲的推薦繪本，附封面、簡介和桃園市圖館藏，還能標記讀過、最愛、想買。</p>
+      <p class="lede">教育部「閱讀起步走」計畫推薦的 0–3 歲、3–5 歲繪本，整理自國立臺灣圖書館的《親子共讀手冊》。每本附封面、簡介和桃園市圖館藏，還能標記讀過、最愛、想買。</p>
       <ul class="stats" id="stats"></ul>
     </div>
     <div class="hero-side">
@@ -431,8 +430,8 @@ syncChips();
   const n = a => new Set(DATA.books.filter(b => ageOf(b) === a).map(b => b.isbn)).size;
   const ys = [...new Set(DATA.books.map(b => b.year))].sort();
   document.getElementById("stats").innerHTML = [
-    [uniq, "本推薦繪本"], [n("0-3"), "本 0–3 歲"], [n("3-5"), "本 3–5 歲"], [`${ys[0]}–${String(ys.at(-1)).slice(2)}`, "三年的手冊"],
-  ].map(([v, t]) => `<li><b>${v}</b><span>${t}</span></li>`).join("");
+    `共 <b>${uniq}</b> 本`, `0–3 歲 <b>${n("0-3")}</b> 本`, `3–5 歲 <b>${n("3-5")}</b> 本`, `${ys[0]}–${ys.at(-1)} 年手冊`,
+  ].map(t => `<li>${t}</li>`).join("");
   const picks = DATA.books.filter(b => b.year === years[0] && b.cover_file).slice(0, 3);
   document.getElementById("fan").innerHTML = picks.map(b => `<img src="${esc(coverSrc(b.cover_file))}" alt="">`).join("");
 })();
