@@ -108,9 +108,12 @@ details.lib li .n b { color: var(--read); font-weight: 500; }
 .empty { color: var(--muted); }
 .mine-row { border-top: 1px dashed var(--line); padding-top: 10px; }
 .mine-row .lbl { font-weight: 700; color: var(--ink); }
-.chip.mc { border-style: dashed; display: inline-flex; align-items: center; gap: 4px; }
+.chip.mc { display: inline-flex; align-items: center; gap: 4px; }
+#m-fav { background: var(--fav-soft); border-color: var(--fav-soft); color: var(--fav); }
+#m-buy { background: var(--buy-soft); border-color: var(--buy-soft); color: var(--buy); }
+#m-read { background: var(--read-soft); border-color: var(--read-soft); color: var(--read); }
+#m-unread { background: var(--bg); border-color: var(--line); }
 .chip.mc svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.chip.mc[aria-pressed="true"] { border-style: solid; }
 #m-fav[aria-pressed="true"] { background: var(--fav); border-color: var(--fav); color: var(--surface); }
 #m-fav[aria-pressed="true"] svg { fill: currentColor; }
 #m-buy[aria-pressed="true"] { background: var(--buy); border-color: var(--buy); color: var(--surface); }
