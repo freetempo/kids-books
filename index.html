@@ -173,8 +173,14 @@ dialog#detail { border: 0; padding: 0; border-radius: 14px; width: min(440px, ca
 dialog#detail::backdrop { background: rgba(10,14,20,.55); }
 dialog#detail .book { box-shadow: none; border-radius: 0; }
 dialog#detail .close { position: sticky; top: 0; float: right; margin: 8px 8px -44px 0; z-index: 2; appearance: none; border: 0; width: 34px; height: 34px; border-radius: 50%; background: var(--surface); color: var(--ink); font-size: 1.2rem; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
-footer { font-size: .82rem; color: var(--muted); display: grid; gap: 4px; }
-footer p { margin: 0; }
+footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px; display: grid; gap: 16px; color: var(--muted); font-size: .84rem; line-height: 1.65; }
+.fgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 18px 24px; }
+.fgrid section { min-width: 0; display: grid; gap: 4px; align-content: start; }
+.fgrid h4 { margin: 0; font-size: .78rem; letter-spacing: .08em; color: var(--ink); font-weight: 700; }
+.fgrid p { margin: 0; }
+.fgrid p.sub { font-size: .78rem; }
+.fgrid b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.fline { margin: 0; padding-top: 12px; border-top: 1px dashed var(--line); font-size: .78rem; text-align: center; }
 @media (max-width: 480px) { .shelf.grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 10px; } .tile .tt { font-size: .78rem; } .tile .ta { font-size: .62rem; padding: 0 5px; } .wrap { padding-inline: 16px; } .cover { height: 220px; } .grp > .lbl { width: 100%; } }
 </style>
 
@@ -297,9 +303,26 @@ footer p { margin: 0; }
   </dialog>
 
   <footer>
-    <p><b>這是個人整理的非官方書單</b>，書目以國立臺灣圖書館公布的手冊為準。來源：<a href="https://www.pccr.tw/閱讀手冊/" target="_blank" rel="noopener">嬰幼兒閱讀推廣計畫 · 閱讀手冊</a>。順序照手冊目錄；分類是手冊標的發展面向。2026 年（115 年）的書單還沒公布，計畫 115 年起改由國家圖書館辦理。</p>
-    <p id="holdnote">館藏數字是 <b>2026-11-06</b> 從<a href="https://webpac.typl.gov.tw/" target="_blank" rel="noopener">桃園市立圖書館館藏查詢</a>抓的快照，借閱狀態會變，借之前請點連結看最新狀況。</p>
-    <p>讀過、最愛、想買的標記和筆記只存在這個瀏覽器，換瀏覽器或清除網站資料就會不見。簡介依手冊推薦語整理改寫，可能和原書略有出入；書名連到三民網路書店的書籍頁。封面圖片的版權屬於各出版社，這裡只用來辨識書籍。整理於 2026-11-06。</p>
+    <div class="fgrid">
+      <section>
+        <h4>資料來源</h4>
+        <p>國立臺灣圖書館《親子共讀手冊》，下載自<a href="https://www.pccr.tw/閱讀手冊/" target="_blank" rel="noopener">嬰幼兒閱讀推廣計畫</a>。順序照手冊目錄，分類是手冊標的發展面向。</p>
+        <p class="sub">2026 年的書單還沒公布，之後改由國家圖書館辦理。</p>
+      </section>
+      <section id="holdnote">
+        <h4>館藏</h4>
+        <p><b>2026-11-06</b> 從<a href="https://webpac.typl.gov.tw/" target="_blank" rel="noopener">桃園市立圖書館</a>抓的快照。借閱狀態會變，借之前請點書裡的連結看最新狀況。</p>
+      </section>
+      <section>
+        <h4>你的紀錄</h4>
+        <p>讀過、最愛、想買和筆記只存在這個瀏覽器，不會上傳。換瀏覽器或清除資料就會不見，怎麼備份請看「使用說明」。</p>
+      </section>
+      <section>
+        <h4>內容說明</h4>
+        <p>簡介依手冊推薦語整理改寫，可能和原書略有出入。書名連到三民網路書店。封面版權屬於各出版社，這裡只用來辨識書籍。</p>
+      </section>
+    </div>
+    <p class="fline">個人整理的非官方書單，書目以國立臺灣圖書館公布的手冊為準 · 整理於 2026-11-06</p>
   </footer>
 </div>
 
