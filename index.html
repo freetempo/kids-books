@@ -431,7 +431,7 @@ syncChips();
   const n = a => new Set(DATA.books.filter(b => ageOf(b) === a).map(b => b.isbn)).size;
   const ys = [...new Set(DATA.books.map(b => b.year))].sort();
   document.getElementById("stats").innerHTML = [
-    `共 <b>${uniq}</b> 本`, `0–3 歲 <b>${n("0-3")}</b> 本`, `3–5 歲 <b>${n("3-5")}</b> 本`, `${ys[0]}–${ys.at(-1)} 年手冊`,
+    `收錄 ${ys[0]}–${ys.at(-1)} 年的手冊，共 <b>${uniq}</b> 本：適合 0–3 歲的有 <b>${n("0-3")}</b> 本，適合 3–5 歲的有 <b>${n("3-5")}</b> 本。`,
   ].map(t => `<li>${t}</li>`).join("");
   // Three random covers on every visit.
   const pool = [...new Map(DATA.books.filter(b => b.cover_file).map(b => [b.isbn, b])).values()];
