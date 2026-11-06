@@ -8,6 +8,7 @@
   --bg: #f6f7f2; --surface: #ffffff; --ink: #23262b; --muted: #636a72; --line: #e1e4dc;
   --accent: #1f5f8b; --accent-soft: #e2edf5;
   --sun: #8a5a00; --sun-soft: #fdf0cf;
+  --pick: #ffc94a; --pick-ink: #3d2a00;
   --read: #2e7d4f; --read-soft: #e0f1e6; --fav: #c0392b; --fav-soft: #fbe3e0; --buy: #7a4fb0; --buy-soft: #efe6fa;
   --shadow: 0 1px 2px rgba(30,40,50,.08), 0 6px 18px rgba(30,40,50,.08);
   --f-title: "LXGW WenKai TC", "Kaiti TC", "BiauKai", serif;
@@ -16,12 +17,12 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #15181c; --surface: #1e2227; --ink: #e8eaed; --muted: #a0a7af; --line: #2e333a;
-  --accent: #8cc4ea; --accent-soft: #1d3446; --sun: #f3c561; --sun-soft: #3a2e12;
+  --accent: #8cc4ea; --accent-soft: #1d3446; --sun: #f3c561; --sun-soft: #3a2e12; --pick: #f3c561; --pick-ink: #2a1d00;
   --read: #7fd3a0; --read-soft: #18352a; --fav: #ff9a8f; --fav-soft: #3d1f1c; --buy: #c9a6f5; --buy-soft: #2e2440;
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25); color-scheme: dark; } }
 :root[data-theme="dark"] {
   --bg: #15181c; --surface: #1e2227; --ink: #e8eaed; --muted: #a0a7af; --line: #2e333a;
-  --accent: #8cc4ea; --accent-soft: #1d3446; --sun: #f3c561; --sun-soft: #3a2e12;
+  --accent: #8cc4ea; --accent-soft: #1d3446; --sun: #f3c561; --sun-soft: #3a2e12; --pick: #f3c561; --pick-ink: #2a1d00;
   --read: #7fd3a0; --read-soft: #18352a; --fav: #ff9a8f; --fav-soft: #3d1f1c; --buy: #c9a6f5; --buy-soft: #2e2440;
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25); color-scheme: dark; }
 * { box-sizing: border-box; }
@@ -83,6 +84,21 @@ details.lib li .n b { color: var(--read); font-weight: 500; }
 .libnone { font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); margin-top: 6px; padding-top: 8px; }
 
 .empty { color: var(--muted); }
+.mine-row { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 2px; }
+.mine-row .lbl { width: auto; margin-right: 6px; font-weight: 700; color: var(--ink); }
+.chip.mc { border-style: dashed; display: inline-flex; align-items: center; gap: 4px; }
+.chip.mc svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.chip.mc[aria-pressed="true"] { border-style: solid; }
+#m-fav[aria-pressed="true"] { background: var(--fav); border-color: var(--fav); color: var(--surface); }
+#m-fav[aria-pressed="true"] svg { fill: currentColor; }
+#m-buy[aria-pressed="true"] { background: var(--buy); border-color: var(--buy); color: var(--surface); }
+#m-read[aria-pressed="true"] { background: var(--read); border-color: var(--read); color: var(--surface); }
+#m-unread[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.btn.pick { background: var(--pick); border-color: var(--pick); color: var(--pick-ink); font-weight: 700; }
+.btn.pick:hover { color: var(--pick-ink); border-color: var(--sun); filter: brightness(1.04); }
+.btn.pick svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#pick-again { background: var(--pick); border-color: var(--pick); color: var(--pick-ink); font-weight: 700; }
+.pickhead { color: var(--sun) !important; }
 .snap { color: var(--muted); font-size: .76rem; }
 details.fold { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 8px; font-size: .84rem; }
 details.fold summary { cursor: pointer; color: var(--ink); }
@@ -183,7 +199,7 @@ footer p { margin: 0; }
         <option value="avail">在架最多</option>
         <option value="title">書名</option>
       </select>
-      <button class="btn primary" id="pick">今晚讀哪本？</button>
+      <button class="btn pick" id="pick"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/></svg>今晚讀哪本？</button>
       <button class="btn" id="open-list">我的清單</button>
       <button class="btn" id="open-help">使用說明</button>
     </div>
@@ -196,12 +212,12 @@ footer p { margin: 0; }
     </div>
     <div class="grp" role="group" aria-label="年度"><span class="lbl">年度</span><span class="grp" id="years"></span></div>
     <div class="grp" role="group" aria-label="手冊分類"><span class="lbl">分類</span><span class="grp" id="cats"></span></div>
-    <div class="grp" role="group" aria-label="我的標記"><span class="lbl">我的</span>
-      <button class="chip" id="m-all" data-mine="" aria-pressed="true">全部</button>
-      <button class="chip" id="m-fav" data-mine="fav" aria-pressed="false">最愛</button>
-      <button class="chip" id="m-buy" data-mine="buy" aria-pressed="false">想買</button>
-      <button class="chip" id="m-read" data-mine="read" aria-pressed="false">讀過</button>
-      <button class="chip" id="m-unread" data-mine="unread" aria-pressed="false">還沒讀</button>
+    <div class="grp mine-row" role="group" aria-label="我的標記"><span class="lbl">我的標記</span>
+      <button class="chip" id="m-all" data-mine="" aria-pressed="true">不限</button>
+      <button class="chip mc" id="m-fav" data-mine="fav" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>最愛</button>
+      <button class="chip mc" id="m-buy" data-mine="buy" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 5h2l2 10h10l2-7H7"/><circle cx="9" cy="19" r="1.3"/><circle cx="17" cy="19" r="1.3"/></svg>想買</button>
+      <button class="chip mc" id="m-read" data-mine="read" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>讀過</button>
+      <button class="chip mc" id="m-unread" data-mine="unread" aria-pressed="false">還沒讀</button>
     </div>
     </div>
     <div class="row2">
@@ -437,7 +453,7 @@ function showDetail(animate) {
   document.getElementById("d-next").disabled = picking || i < 0 || i >= navList.length - 1;
   document.getElementById("d-pos").textContent = picking ? "" : i >= 0 ? `${i + 1} / ${navList.length}` : "";
   document.getElementById("pickhead").textContent = picking ? "今晚讀這本！" : "";
-  document.getElementById("pickagain").innerHTML = picking ? `<button class="btn primary" id="pick-again">再抽一次</button>` : "";
+  document.getElementById("pickagain").innerHTML = picking ? `<button class="btn" id="pick-again">再抽一次</button>` : "";
 }
 function openDetail(key, opts = {}) {
   detailKey = key; picking = !!opts.pick; navList = visibleBooks();
@@ -490,7 +506,7 @@ function filterSummary() {
   const label = k => document.querySelector(`#filters .chip[data-${k}="${CSS.escape(state[k])}"]`)?.textContent || "";
   const parts = [state.age ? label("age") : "全部年齡", state.year ? label("year") + " 年" : "全部年度"];
   if (state.cat) parts.push(label("cat"));
-  if (state.mine) parts.push("我的：" + label("mine"));
+  if (state.mine) parts.push("我的標記：" + label("mine"));
   return "目前：" + parts.join("・");
 }
 const openLib = new Set();
@@ -505,7 +521,11 @@ function render() {
   document.getElementById("fsum").textContent = filterSummary();
   openLib.forEach(isbn => document.querySelector(`.book[data-isbn="${isbn}"] details.lib`)?.setAttribute("open", ""));
   document.getElementById("count").textContent = `${list.length} 本`;
-  document.getElementById("empty").hidden = list.length > 0;
+  const empty = document.getElementById("empty");
+  empty.hidden = list.length > 0;
+  empty.textContent = ["fav", "buy", "read"].includes(state.mine) && !marks[state.mine].length
+    ? `還沒有標「${LABEL[state.mine]}」的書。點開一本書，按「${LABEL[state.mine]}」就會出現在這裡。`
+    : "沒有符合的書，試試放寬篩選條件。";
 }
 document.querySelector(".bar").addEventListener("click", e => {
   const c = e.target.closest(".chip"); if (!c) return;
