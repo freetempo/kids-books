@@ -331,7 +331,7 @@ function saveNotes() { try { localStorage.setItem("kb-notes", JSON.stringify(not
 const NOTE_ICON = '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>';
 
 // Filters
-const state = { age: "3-5", year: "", cat: "", mine: "", q: "", sort: "order" };
+const state = { age: "", year: "", cat: "", mine: "", q: "", sort: "order" };
 try { state.sort = localStorage.getItem("kb-sort") || "order"; } catch (e) {}
 let savedFilters = null;
 try { savedFilters = JSON.parse(localStorage.getItem("kb-filters")); } catch (e) {}
