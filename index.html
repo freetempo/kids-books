@@ -169,6 +169,7 @@ dialog.panel::backdrop { background: rgba(10,14,20,.55); }
 .help p { margin: 0; font-size: .9rem; }
 .panel .msg { font-size: .82rem; color: var(--read); min-height: 1.2em; }
 .panel section { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 14px; }
+.panel .pb > section:first-child { border-top: 0; padding-top: 0; }
 dialog#detail { border: 0; padding: 0; border-radius: 14px; width: min(440px, calc(100vw - 32px)); max-height: calc(100vh - 48px); background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
 dialog#detail::backdrop { background: rgba(10,14,20,.55); }
 dialog#detail .book { box-shadow: none; border-radius: 0; }
