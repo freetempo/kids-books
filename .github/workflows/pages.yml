@@ -3,8 +3,10 @@ name: Refresh holdings and deploy
 on:
   push:
     branches: [main]
-  schedule:
-    - cron: "0 22 * * *"   # 06:00 Asia/Taipei
+  # Daily holdings refresh is paused (shelf counts are hidden on the page for now).
+  # To resume: uncomment the schedule and build with --counts in deploy.py and below.
+  # schedule:
+  #   - cron: "0 22 * * *"   # 06:00 Asia/Taipei
   workflow_dispatch:
 
 permissions:
@@ -18,7 +20,7 @@ concurrency:
 
 jobs:
   refresh:
-    if: github.event_name != 'push'
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

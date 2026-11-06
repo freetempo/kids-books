@@ -16,6 +16,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--out", default=str(here / "index.html"))
 ap.add_argument("--wrap", action="store_true", help="emit a full document with doctype, meta and noindex")
 ap.add_argument("--built")
+ap.add_argument("--counts", action="store_true", help="show Taoyuan per-branch shelf counts (off by default)")
 args = ap.parse_args()
 
 books = []
@@ -25,7 +26,7 @@ for name in ("books.json", "books-2023-2024.json", "books-0-3.json"):
 links_path = here / "links.json"
 links = {k: v for k, v in json.loads(links_path.read_text()).items() if v} if links_path.exists() else {}
 hold_path = here / "holdings.json"
-hold = json.loads(hold_path.read_text()) if hold_path.exists() else {}
+hold = json.loads(hold_path.read_text()) if hold_path.exists() and args.counts else {}
 meta_path = here / "meta.json"
 meta = json.loads(meta_path.read_text()) if meta_path.exists() else {}
 built = args.built or meta.get("built") or datetime.date.today().isoformat()
@@ -36,6 +37,7 @@ html = html.replace("__HOLD__", json.dumps({"items": hold.get("items")} if hold 
 html = html.replace("__LINKS__", json.dumps(links))
 html = html.replace("__HOLD_DATE__", (hold.get("generated") or "")[:10])
 html = html.replace("__BUILT__", built)
+html = html.replace("__SHOW_COUNTS__", "true" if args.counts else "false")
 if args.wrap:
     html = ('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width,initial-scale=1">'

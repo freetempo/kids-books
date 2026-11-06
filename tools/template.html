@@ -369,7 +369,7 @@ footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px;
       </section>
       <section id="holdnote">
         <h4>圖書館館藏</h4>
-        <p>選擇「我的縣市」後，每本書都有按鈕直接查該縣市圖書館的即時館藏。桃園市另外顯示各分館的在架數，是 <b>__HOLD_DATE__</b> 從<a href="https://webpac.typl.gov.tw/" target="_blank" rel="noopener">桃園市立圖書館</a>抓的快照。</p>
+        <p>選擇「我的縣市」後，每本書都有按鈕直接查該縣市圖書館的即時館藏。<span class="counts-only">桃園市另外顯示各分館的在架數，是 <b>__HOLD_DATE__</b> 從<a href="https://webpac.typl.gov.tw/" target="_blank" rel="noopener">桃園市立圖書館</a>抓的快照。</span></p>
       </section>
       <section>
         <h4>你的紀錄</h4>
@@ -389,6 +389,9 @@ const DATA = __DATA__;
 const HOLD = __HOLD__;
 const LINKS = __LINKS__;
 const LIBS = [{"id": "臺北市", "name": "臺北市立圖書館", "isbn": "https://book.tpml.edu.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://book.tpml.edu.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "新北市", "name": "新北市立圖書館", "isbn": "https://webpac.ntpclib.gov.tw/Miracle_rwd/searchResult?m=ss&keyword={isbn}&start=1&rows=10&facet=true&lang=zh_TW&type=1", "title": "https://webpac.ntpclib.gov.tw/Miracle_rwd/searchResult?m=ss&keyword={q}&start=1&rows=10&facet=true&lang=zh_TW&type=1", "home": null}, {"id": "桃園市", "name": "桃園市立圖書館", "isbn": "https://webpac.typl.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.typl.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "臺中市", "name": "臺中市立圖書館", "isbn": "https://webpac.taichung.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.taichung.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "臺南市", "name": "臺南市立圖書館", "isbn": "https://lib.tnml.tn.edu.tw/webpac/search.cfm?m=as&k0={isbn}&t0=i&c0=and", "title": "https://lib.tnml.tn.edu.tw/webpac/search.cfm?m=as&k0={q}&t0=t&c0=and", "home": null}, {"id": "高雄市", "name": "高雄市立圖書館", "isbn": "https://webpacx.ksml.edu.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpacx.ksml.edu.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "基隆市", "name": "基隆市公共圖書館", "isbn": "https://webpac.klccab.gov.tw/webpac/search.cfm?m=as&k0={isbn}&t0=i&c0=and", "title": "https://webpac.klccab.gov.tw/webpac/search.cfm?m=as&k0={q}&t0=t&c0=and", "home": null}, {"id": "新竹市", "name": "新竹市文化局圖書館", "isbn": "https://webpac.hccg.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.hccg.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "新竹縣", "name": "新竹縣公共圖書館", "isbn": "https://webpac.hchcc.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.hchcc.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "苗栗縣", "name": "苗栗縣公共圖書館", "isbn": "https://webpacx.miaoli.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpacx.miaoli.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "彰化縣", "name": "彰化縣公共圖書館", "isbn": "https://library.toread.bocach.gov.tw/webpac_rwd/search.cfm?m=as&k0={isbn}&t0=i&c0=and", "title": "https://library.toread.bocach.gov.tw/webpac_rwd/search.cfm?m=as&k0={q}&t0=t&c0=and", "home": null}, {"id": "南投縣", "name": "南投縣政府公共圖書館", "isbn": "https://webpac.nthcc.gov.tw/webpac/search.cfm?m=as&k0={isbn}&t0=i&c0=and", "title": "https://webpac.nthcc.gov.tw/webpac/search.cfm?m=as&k0={q}&t0=t&c0=and", "home": null}, {"id": "雲林縣", "name": "雲林縣公共圖書館", "isbn": "https://webpacx.ylccb.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpacx.ylccb.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "嘉義市", "name": "嘉義市政府文化局圖書館", "isbn": "https://webpacx.chiayi.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpacx.chiayi.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "嘉義縣", "name": "嘉義縣立圖書館", "isbn": "https://lib.cycab.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://lib.cycab.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "屏東縣", "name": "屏東縣公共圖書館", "isbn": "https://library.pthg.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://library.pthg.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "宜蘭縣", "name": "宜蘭縣公共圖書館", "isbn": "https://webpac.ilccb.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.ilccb.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "花蓮縣", "name": "花蓮縣公共圖書館", "isbn": "https://center.hccc.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://center.hccc.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "臺東縣", "name": "臺東縣圖書館", "isbn": "https://libraryx.ccl.ttct.edu.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://libraryx.ccl.ttct.edu.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "澎湖縣", "name": "澎湖縣圖書館", "isbn": "https://webpac.phlib.nat.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.phlib.nat.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "金門縣", "name": "金門縣公共圖書館", "isbn": "https://webpacx.km.edu.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpacx.km.edu.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "連江縣", "name": "連江縣文化處馬祖圖書館", "isbn": null, "title": null, "home": "https://matsucc.e2center.com.tw/webpac/"}, {"id": "國臺圖", "name": "國立臺灣圖書館", "isbn": "https://cis2.ntl.edu.tw/search/?query_op=and&query_term={isbn}&query_field=issn_isbn&match_type=phrase", "title": "https://cis2.ntl.edu.tw/search/?query_op=and&query_term={q}&query_field=title&match_type=phrase", "home": null}, {"id": "國資圖", "name": "國立公共資訊圖書館", "isbn": "https://ipac.nlpi.edu.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://ipac.nlpi.edu.tw/search?searchField=FullText&searchInput={q}", "home": null}];
+// Per-branch shelf counts (Taoyuan only, scraped by holdings.py). Turned off for now: every city just gets a link.
+// To bring them back: build with --counts (and re-enable the schedule in .github/workflows/pages.yml).
+const SHOW_COUNTS = __SHOW_COUNTS__;
 const HOLD_CITY = "桃園市";
 let city = HOLD_CITY;
 try { const c = localStorage.getItem("kb-city"); if (c && LIBS.some(l => l.id === c)) city = c; } catch (e) {}
@@ -508,7 +511,7 @@ function libLinks(b) {
   return `<div class="libgo"><a class="libbtn" href="${esc(fill(L.isbn, b.isbn, b.title))}" target="_blank" rel="noopener">到${esc(L.name)}查館藏${EXT2}</a>${L.title ? `<a class="libalt" href="${esc(fill(L.title, b.isbn, b.title))}" target="_blank" rel="noopener">查不到？用書名查</a>` : ""}</div>`;
 }
 function holdings(b) {
-  if (city !== HOLD_CITY) return libLinks(b);
+  if (!SHOW_COUNTS || city !== HOLD_CITY) return libLinks(b);
   const h = HOLD.items?.[b.isbn];
   const link = h?.record_url || SEARCH(b.isbn);
   if (!h) return `<div class="libnone"><a href="${esc(SEARCH(b.isbn))}" target="_blank" rel="noopener">查桃園市圖館藏</a></div>`;
@@ -696,9 +699,10 @@ citySel.innerHTML = `<optgroup label="縣市">${LIBS.filter(l => !l.id.startsWit
 citySel.value = city;
 function syncSort() {
   const opt = sortSel.querySelector('option[value="avail"]');
-  opt.disabled = city !== HOLD_CITY;
+  opt.hidden = !SHOW_COUNTS;
+  opt.disabled = !SHOW_COUNTS || city !== HOLD_CITY;
   opt.textContent = city === HOLD_CITY ? "在架最多" : "在架最多（限桃園）";
-  if (city !== HOLD_CITY && state.sort === "avail") { state.sort = "order"; sortSel.value = "order"; }
+  if ((!SHOW_COUNTS || city !== HOLD_CITY) && state.sort === "avail") { state.sort = "order"; sortSel.value = "order"; }
 }
 citySel.addEventListener("change", () => { city = citySel.value; try { localStorage.setItem("kb-city", city); } catch (e) {} syncSort(); render(); });
 sortSel.value = state.sort;
@@ -728,7 +732,7 @@ function listText() {
 function renderList() {
   const items = listBooks();
   document.getElementById("list-items").innerHTML = items.length
-    ? items.map(b => `<li><a href="${esc(SANMIN(b.isbn))}" target="_blank" rel="noopener">《${esc(b.title)}》</a><div class="meta">${esc(b.author)} · ${esc(b.publisher)} · ISBN ${esc(b.isbn)}${city === HOLD_CITY && availOf(b) >= 0 ? ` · 桃園市圖 ${availOf(b)} 本在架` : ""}</div></li>`).join("")
+    ? items.map(b => `<li><a href="${esc(SANMIN(b.isbn))}" target="_blank" rel="noopener">《${esc(b.title)}》</a><div class="meta">${esc(b.author)} · ${esc(b.publisher)} · ISBN ${esc(b.isbn)}${SHOW_COUNTS && city === HOLD_CITY && availOf(b) >= 0 ? ` · 桃園市圖 ${availOf(b)} 本在架` : ""}</div></li>`).join("")
     : `<li style="list-style:none;margin-left:-1.4em;color:var(--muted)">還沒有標「${LABEL[which]}」的書。</li>`;
   document.getElementById("list-copy").disabled = !items.length;
   document.getElementById("list-msg").textContent = "";
@@ -804,7 +808,7 @@ document.getElementById("shelf").addEventListener("toggle", e => {
   const d = e.target; if (!d.matches?.("details.lib")) return;
   const isbn = d.closest(".book").dataset.isbn; if (d.open) openLib.add(isbn); else openLib.delete(isbn);
 }, true);
-if (!HOLD.items) document.getElementById("holdnote").hidden = true;
+if (!SHOW_COUNTS) document.querySelectorAll(".counts-only").forEach(el => el.remove());
 // The address is assembled here so it is not sitting in the page source as plain text for spam crawlers.
 (function () {
   const addr = ["freetempostudio", "gmail.com"].join("@");
