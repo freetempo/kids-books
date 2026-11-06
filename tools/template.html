@@ -115,6 +115,13 @@ details.lib li .n b { color: var(--read); font-weight: 500; }
 .libnone { font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); margin-top: 6px; padding-top: 8px; }
 
 .empty { color: var(--muted); }
+.libgo { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.libbtn { display: inline-flex; align-items: center; gap: 5px; font-size: .84rem; font-weight: 500; padding: 5px 12px; border-radius: 8px; background: var(--accent-soft); color: var(--accent); text-decoration: none; }
+.libbtn:hover { background: var(--accent); color: var(--surface); }
+.libbtn svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.libalt { font-size: .78rem; color: var(--muted); }
+a.libalt { color: var(--muted); text-underline-offset: 2px; }
+#city { font: inherit; font-size: .84rem; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
 .mine-row { border-top: 1px dashed var(--line); padding-top: 10px; }
 .mine-row .lbl { font-weight: 700; color: var(--ink); }
 .chip.mc { display: inline-flex; align-items: center; gap: 4px; }
@@ -227,7 +234,7 @@ footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px;
     <div class="hero-text">
       <p class="eyebrow">國立臺灣圖書館 · 親子共讀手冊</p>
       <h1>親子共讀手冊書單</h1>
-      <p class="lede">教育部「閱讀起步走」計畫推薦的 0–3 歲、3–5 歲繪本，整理自國立臺灣圖書館的《親子共讀手冊》。每本附封面、簡介和桃園市圖館藏，還能標記讀過、最愛、想買。</p>
+      <p class="lede">教育部「閱讀起步走」計畫推薦的 0–3 歲、3–5 歲繪本，整理自國立臺灣圖書館的《親子共讀手冊》。每本附封面、簡介，可以一鍵查你所在縣市的圖書館館藏，還能標記讀過、最愛、想買。</p>
       <ul class="stats" id="stats"></ul>
     </div>
     <div class="hero-side">
@@ -242,13 +249,14 @@ footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px;
 
   <div class="bar" id="bar">
     <div class="searchrow">
-      <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><input type="search" id="q" placeholder="搜尋書名、作者或分館，例如 龍潭" aria-label="搜尋"></label>
+      <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><input type="search" id="q" placeholder="搜尋書名或作者" aria-label="搜尋"></label>
     </div>
     <div class="actions">
       <button class="btn pick" id="pick"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/></svg>今晚讀哪本？</button>
       <button class="btn" id="open-list">我的清單</button>
       <button class="btn" id="open-help">使用說明</button>
       <span class="spacer"></span>
+      <label class="sortl">我的縣市<select id="city" aria-label="我的縣市"></select></label>
       <label class="sortl">排序<select id="sort" aria-label="排序">
         <option value="order">手冊順序</option>
         <option value="avail">在架最多</option>
@@ -296,7 +304,8 @@ footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px;
       <section>
         <h3>可以做什麼</h3>
         <ul>
-          <li>用上面的篩選挑年齡、年度、分類；搜尋框可以找書名、作者或分館。</li>
+          <li>用上面的篩選挑年齡、年度、分類；搜尋框可以找書名或作者。</li>
+          <li>在「我的縣市」選你所在的縣市，每本書都會有「到〇〇查館藏」的按鈕，直接看該縣市圖書館的即時館藏。查不到時可以改用書名查（不同版本的書號不一樣）。</li>
           <li>「封面牆」只看封面，點封面看詳細；「詳細」一次顯示全部資訊。</li>
           <li>每本書可以標「讀過」「最愛」「想買」，也可以寫筆記。</li>
           <li>「今晚讀哪本？」會從目前篩選的書裡隨機抽一本，優先抽還沒讀過的。</li>
@@ -359,8 +368,8 @@ footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px;
         <p class="sub">2026 年的書單還沒公布，之後改由國家圖書館辦理。</p>
       </section>
       <section id="holdnote">
-        <h4>館藏</h4>
-        <p><b>__HOLD_DATE__</b> 從<a href="https://webpac.typl.gov.tw/" target="_blank" rel="noopener">桃園市立圖書館</a>抓的快照。借閱狀態會變，借之前請點書裡的連結看最新狀況。</p>
+        <h4>圖書館館藏</h4>
+        <p>選擇「我的縣市」後，每本書都有按鈕直接查該縣市圖書館的即時館藏。桃園市另外顯示各分館的在架數，是 <b>__HOLD_DATE__</b> 從<a href="https://webpac.typl.gov.tw/" target="_blank" rel="noopener">桃園市立圖書館</a>抓的快照。</p>
       </section>
       <section>
         <h4>你的紀錄</h4>
@@ -379,6 +388,12 @@ footer { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 22px;
 const DATA = __DATA__;
 const HOLD = __HOLD__;
 const LINKS = __LINKS__;
+const LIBS = [{"id": "臺北市", "name": "臺北市立圖書館", "isbn": "https://book.tpml.edu.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://book.tpml.edu.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "新北市", "name": "新北市立圖書館", "isbn": "https://webpac.ntpclib.gov.tw/Miracle_rwd/searchResult?m=ss&keyword={isbn}&start=1&rows=10&facet=true&lang=zh_TW&type=1", "title": "https://webpac.ntpclib.gov.tw/Miracle_rwd/searchResult?m=ss&keyword={q}&start=1&rows=10&facet=true&lang=zh_TW&type=1", "home": null}, {"id": "桃園市", "name": "桃園市立圖書館", "isbn": "https://webpac.typl.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.typl.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "臺中市", "name": "臺中市立圖書館", "isbn": "https://webpac.taichung.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.taichung.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "臺南市", "name": "臺南市立圖書館", "isbn": "https://lib.tnml.tn.edu.tw/webpac/search.cfm?m=as&k0={isbn}&t0=i&c0=and", "title": "https://lib.tnml.tn.edu.tw/webpac/search.cfm?m=as&k0={q}&t0=t&c0=and", "home": null}, {"id": "高雄市", "name": "高雄市立圖書館", "isbn": "https://webpacx.ksml.edu.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpacx.ksml.edu.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "基隆市", "name": "基隆市公共圖書館", "isbn": "https://webpac.klccab.gov.tw/webpac/search.cfm?m=as&k0={isbn}&t0=i&c0=and", "title": "https://webpac.klccab.gov.tw/webpac/search.cfm?m=as&k0={q}&t0=t&c0=and", "home": null}, {"id": "新竹市", "name": "新竹市文化局圖書館", "isbn": "https://webpac.hccg.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.hccg.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "新竹縣", "name": "新竹縣公共圖書館", "isbn": "https://webpac.hchcc.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.hchcc.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "苗栗縣", "name": "苗栗縣公共圖書館", "isbn": "https://webpacx.miaoli.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpacx.miaoli.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "彰化縣", "name": "彰化縣公共圖書館", "isbn": "https://library.toread.bocach.gov.tw/webpac_rwd/search.cfm?m=as&k0={isbn}&t0=i&c0=and", "title": "https://library.toread.bocach.gov.tw/webpac_rwd/search.cfm?m=as&k0={q}&t0=t&c0=and", "home": null}, {"id": "南投縣", "name": "南投縣政府公共圖書館", "isbn": "https://webpac.nthcc.gov.tw/webpac/search.cfm?m=as&k0={isbn}&t0=i&c0=and", "title": "https://webpac.nthcc.gov.tw/webpac/search.cfm?m=as&k0={q}&t0=t&c0=and", "home": null}, {"id": "雲林縣", "name": "雲林縣公共圖書館", "isbn": "https://webpacx.ylccb.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpacx.ylccb.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "嘉義市", "name": "嘉義市政府文化局圖書館", "isbn": "https://webpacx.chiayi.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpacx.chiayi.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "嘉義縣", "name": "嘉義縣立圖書館", "isbn": "https://lib.cycab.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://lib.cycab.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "屏東縣", "name": "屏東縣公共圖書館", "isbn": "https://library.pthg.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://library.pthg.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "宜蘭縣", "name": "宜蘭縣公共圖書館", "isbn": "https://webpac.ilccb.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.ilccb.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "花蓮縣", "name": "花蓮縣公共圖書館", "isbn": "https://center.hccc.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://center.hccc.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "臺東縣", "name": "臺東縣圖書館", "isbn": "https://libraryx.ccl.ttct.edu.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://libraryx.ccl.ttct.edu.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "澎湖縣", "name": "澎湖縣圖書館", "isbn": "https://webpac.phlib.nat.gov.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpac.phlib.nat.gov.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "金門縣", "name": "金門縣公共圖書館", "isbn": "https://webpacx.km.edu.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://webpacx.km.edu.tw/search?searchField=FullText&searchInput={q}", "home": null}, {"id": "連江縣", "name": "連江縣文化處馬祖圖書館", "isbn": null, "title": null, "home": "https://matsucc.e2center.com.tw/webpac/"}, {"id": "國臺圖", "name": "國立臺灣圖書館", "isbn": "https://cis2.ntl.edu.tw/search/?query_op=and&query_term={isbn}&query_field=issn_isbn&match_type=phrase", "title": "https://cis2.ntl.edu.tw/search/?query_op=and&query_term={q}&query_field=title&match_type=phrase", "home": null}, {"id": "國資圖", "name": "國立公共資訊圖書館", "isbn": "https://ipac.nlpi.edu.tw/search?searchField=ISBN&searchInput={isbn}", "title": "https://ipac.nlpi.edu.tw/search?searchField=FullText&searchInput={q}", "home": null}];
+const HOLD_CITY = "桃園市";
+let city = HOLD_CITY;
+try { const c = localStorage.getItem("kb-city"); if (c && LIBS.some(l => l.id === c)) city = c; } catch (e) {}
+const libOf = () => LIBS.find(l => l.id === city);
+const fill = (u, isbn, title) => u.replace("{isbn}", encodeURIComponent(isbn)).replace("{q}", encodeURIComponent(title));
 const HOLD_DAY = "__HOLD_DATE__".slice(5).replace("-", "/");
 const ageOf = b => b.age_group?.startsWith("0-3") ? "0-3" : "3-5";
 const SANMIN = isbn => LINKS[isbn] || `https://www.sanmin.com.tw/search?ct=ISBN&qu=${isbn}`;
@@ -486,7 +501,14 @@ function noteBox(b) {
   const t = notes[b.isbn] || "";
   return `<details class="note fold"><summary>我的筆記${t ? `<span class="preview">：${esc(t.split("\n")[0].slice(0, 24))}${t.length > 24 ? "…" : ""}</span>` : ""}</summary><textarea aria-label="我的筆記" id="note-${esc(b.isbn)}" data-isbn="${esc(b.isbn)}" placeholder="例如：小孩很愛第 5 頁、龍潭分館借過">${esc(t)}</textarea><span class="saved" aria-live="polite"></span></details>`;
 }
+const EXT2 = '<svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
+function libLinks(b) {
+  const L = libOf();
+  if (!L.isbn) return `<div class="libgo"><a class="libbtn" href="${esc(L.home)}" target="_blank" rel="noopener">到${esc(L.name)}查館藏${EXT2}</a><span class="libalt">進網站後搜尋 ISBN ${esc(b.isbn)}</span></div>`;
+  return `<div class="libgo"><a class="libbtn" href="${esc(fill(L.isbn, b.isbn, b.title))}" target="_blank" rel="noopener">到${esc(L.name)}查館藏${EXT2}</a>${L.title ? `<a class="libalt" href="${esc(fill(L.title, b.isbn, b.title))}" target="_blank" rel="noopener">查不到？用書名查</a>` : ""}</div>`;
+}
 function holdings(b) {
+  if (city !== HOLD_CITY) return libLinks(b);
   const h = HOLD.items?.[b.isbn];
   const link = h?.record_url || SEARCH(b.isbn);
   if (!h) return `<div class="libnone"><a href="${esc(SEARCH(b.isbn))}" target="_blank" rel="noopener">查桃園市圖館藏</a></div>`;
@@ -495,7 +517,7 @@ function holdings(b) {
   const rows = [...h.branches].sort((a, c) => (c.available || 0) - (a.available || 0) || a.branch.localeCompare(c.branch, "zh-Hant"))
     .map(x => `<li><span>${esc(x.branch)}</span><span class="n">${x.available != null ? `<b>${x.available}</b> / ` : ""}${x.copies} 本</span></li>`).join("");
   return `<details class="lib"><summary>桃園市圖 ${h.branches.length} 館有${h.branches.some(x => x.available != null) ? `，${avail} 本在架` : ""}<span class="snap">（${HOLD_DAY} 的資料）</span></summary>
-    <ul>${rows}</ul><a href="${esc(link)}" target="_blank" rel="noopener">看最新借閱狀態</a></details>`;
+    <ul>${rows}</ul></details>` + libLinks(b);
 }
 const EXT = '<svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
 function card(b, inDetail, row) {
@@ -668,7 +690,19 @@ dlg.addEventListener("touchend", e => {
 });
 document.getElementById("pick").addEventListener("click", pick);
 const sortSel = document.getElementById("sort");
+const citySel = document.getElementById("city");
+citySel.innerHTML = `<optgroup label="縣市">${LIBS.filter(l => !l.id.startsWith("國")).map(l => `<option value="${esc(l.id)}">${esc(l.id)}</option>`).join("")}</optgroup>` +
+  `<optgroup label="全國都能借">${LIBS.filter(l => l.id.startsWith("國")).map(l => `<option value="${esc(l.id)}">${l.id === "國臺圖" ? "國臺圖（新北中和）" : "國資圖（台中）"}</option>`).join("")}</optgroup>`;
+citySel.value = city;
+function syncSort() {
+  const opt = sortSel.querySelector('option[value="avail"]');
+  opt.disabled = city !== HOLD_CITY;
+  opt.textContent = city === HOLD_CITY ? "在架最多" : "在架最多（限桃園）";
+  if (city !== HOLD_CITY && state.sort === "avail") { state.sort = "order"; sortSel.value = "order"; }
+}
+citySel.addEventListener("change", () => { city = citySel.value; try { localStorage.setItem("kb-city", city); } catch (e) {} syncSort(); render(); });
 sortSel.value = state.sort;
+syncSort();
 sortSel.addEventListener("change", () => { state.sort = sortSel.value; try { localStorage.setItem("kb-sort", state.sort); } catch (e) {} render(); });
 
 // Collapsible filters: folded by default on narrow screens.
@@ -694,7 +728,7 @@ function listText() {
 function renderList() {
   const items = listBooks();
   document.getElementById("list-items").innerHTML = items.length
-    ? items.map(b => `<li><a href="${esc(SANMIN(b.isbn))}" target="_blank" rel="noopener">《${esc(b.title)}》</a><div class="meta">${esc(b.author)} · ${esc(b.publisher)} · ISBN ${esc(b.isbn)}${availOf(b) >= 0 ? ` · 桃園市圖 ${availOf(b)} 本在架` : ""}</div></li>`).join("")
+    ? items.map(b => `<li><a href="${esc(SANMIN(b.isbn))}" target="_blank" rel="noopener">《${esc(b.title)}》</a><div class="meta">${esc(b.author)} · ${esc(b.publisher)} · ISBN ${esc(b.isbn)}${city === HOLD_CITY && availOf(b) >= 0 ? ` · 桃園市圖 ${availOf(b)} 本在架` : ""}</div></li>`).join("")
     : `<li style="list-style:none;margin-left:-1.4em;color:var(--muted)">還沒有標「${LABEL[which]}」的書。</li>`;
   document.getElementById("list-copy").disabled = !items.length;
   document.getElementById("list-msg").textContent = "";
